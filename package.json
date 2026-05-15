@@ -1,0 +1,25 @@
+{
+  "name": "playlist-converter",
+  "version": "1.0.0",
+  "description": "When cloning this repo, run `npm install` to install all the dependencies",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"npm run dev --prefix client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matterladd/Playlist-Converter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/matterladd/Playlist-Converter/issues"
+  },
+  "homepage": "https://github.com/matterladd/Playlist-Converter#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
