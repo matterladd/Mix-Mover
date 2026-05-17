@@ -1,7 +1,7 @@
 # Playlist Converter
-### for when your friend keeps sending you those dang Apple Music links
+### For when your friend keeps sending you those dang Apple Music links
 
-This project is organized into three `npm` domains: the Client, Server, and overall/top-level. Running top-level runs the whole application, while running only the client or server will run that part of the stack.
+This project is organized into three `npm` domains: the **Client**, **Server**, and **overall/top-level**. Running top-level runs the whole application, while running only the client or server will run that part of the stack.
 
 List of `npm` dependencies and their purpose:
 #### Client
