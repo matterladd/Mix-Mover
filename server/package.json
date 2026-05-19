@@ -2,22 +2,24 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "script.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon --exec tsx src/script.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
+    "better-sqlite3": "^12.10.0",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
-    "sqlite3": "^6.0.1",
     "tsx": "^4.22.1"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/express-session": "^1.19.0",
     "nodemon": "^3.1.14"
   }
 }

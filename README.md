@@ -9,10 +9,11 @@ List of `npm` dependencies and their purpose:
 - `vite`
 
 #### Server
-- `express`
-- `express-session`
-- `sqlite3`
-- `tsx` -> used to execute TypeScript code directly (completely different from a`.tsx` file)
+- `express` -> Web routing framework
+- `express-session` -> Express middleware extension to store active session information
+- `better-sqlite3` -> Stores user data across different sessions
+- `tsx` -> used to execute TypeScript code directly (not related to a`.tsx` file)
+- `nodemon` -> development tool for hot-reloading the backend server
 
 #### Project
 - `concurrently` -> runs multiple commands concurrently. Used to run client and server at the same time.
