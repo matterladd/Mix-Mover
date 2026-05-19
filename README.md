@@ -5,6 +5,7 @@ This project is organized into three `npm` domains: the **Client**, **Server**, 
 
 List of `npm` dependencies and their purpose:
 #### Client
+- `react`
 - `typescript`
 - `vite`
 
