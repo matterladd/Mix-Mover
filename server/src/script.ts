@@ -8,7 +8,7 @@ app.get("/", (req, res) => {
     res.send("Hello world!");
 });
 
-const server = app.listen(port, '172.0.0.1', () => {
+const server = app.listen(port, '127.0.0.1', () => {
     console.log(`App listening on port ${port}`);
 });
 
