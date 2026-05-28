@@ -5,7 +5,7 @@
   "main": "script.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --exec tsx src/script.ts"
+    "dev": "nodemon --exec tsx --env-file=.env src/script.ts"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +13,7 @@
   "type": "module",
   "dependencies": {
     "better-sqlite3": "^12.10.0",
+    "better-sqlite3-session-store": "^0.1.0",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "tsx": "^4.22.1"
