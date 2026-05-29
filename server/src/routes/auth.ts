@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 import 'express-session'; // include for types
-import bcrypt, { hash } from 'bcrypt';
+import bcrypt from 'bcrypt';
 import db from '../db/client.ts'
 
 const SALT_ROUNDS = 12;
