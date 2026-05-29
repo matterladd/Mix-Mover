@@ -25,7 +25,7 @@ authRoutes.post('/login', async (req, res) => {
     res.status(401).json({ error: 'Invalid credentials' });
 });
 
-authRoutes.use('/signup', async (req, res) => {
+authRoutes.post('/signup', async (req, res) => {
     const { email, password } = req.body;
     const getUser = db.prepare('SELECT * FROM users WHERE email = ?');
     const addUser = db.prepare('INSERT INTO users (email, password_hash) VALUES (?, ?)');
