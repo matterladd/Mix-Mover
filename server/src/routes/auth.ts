@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
 import 'express-session'; // include for types
 import bcrypt from 'bcrypt';
-import db from '../db/client.ts'
+import { getUserByEmail, getUserById, addUser } from '../db/queries.ts';
 
 const SALT_ROUNDS = 12;
 const authRoutes = Router();
@@ -10,8 +10,7 @@ authRoutes.use(express.json()); // expect and parse json requests
 
 authRoutes.post('/login', async (req, res) => { // TODO: are async functions handled correctly by express?
     const { email, password } = req.body;
-    const getUser = db.prepare('SELECT * FROM users WHERE email = ?');
-    const user: any = getUser.get(email); // TODO: make types for db return data
+    const user = getUserByEmail.get(email);
     if (user) { // TODO: logic here can be improved
         const match = await bcrypt.compare(password, user.password_hash); // TODO: error checking
         if (!match) {
@@ -27,9 +26,7 @@ authRoutes.post('/login', async (req, res) => { // TODO: are async functions han
 
 authRoutes.post('/signup', async (req, res) => {
     const { email, password } = req.body;
-    const getUser = db.prepare('SELECT * FROM users WHERE email = ?');
-    const addUser = db.prepare('INSERT INTO users (email, password_hash) VALUES (?, ?)');
-    if (getUser.get(email)) { // returns undefined if not found in table
+    if (getUserByEmail.get(email)) { // returns undefined if not found in table
         res.status(401).json({ error: 'User already exists'});
         return;
     }
@@ -43,7 +40,6 @@ authRoutes.get('/me', (req, res) => {
         res.status(401).json({ error: 'not logged in' });
         return;
     }
-    const getUserById = db.prepare('SELECT * FROM users WHERE id = ?');
     const user: any = getUserById.get(req.session.userId);
     if (!user){
         res.status(404).json({ error: 'user does not exist. How\'d you get a session?'});
