@@ -8,7 +8,7 @@ const authRoutes = Router();
 
 authRoutes.use(express.json()); // expect and parse json requests
 
-authRoutes.post('/login', async (req, res) => {
+authRoutes.post('/login', async (req, res) => { // TODO: are async functions handled correctly by express?
     const { email, password } = req.body;
     const getUser = db.prepare('SELECT * FROM users WHERE email = ?');
     const user: any = getUser.get(email); // TODO: make types for db return data
@@ -38,8 +38,18 @@ authRoutes.post('/signup', async (req, res) => {
     res.status(200).json({ success: true });
 });
 
-authRoutes.use('/', (req, res) => {
-    res.redirect('http://example.com');
+authRoutes.get('/me', (req, res) => {
+    if (!req.session.userId) {
+        res.status(401).json({ error: 'not logged in' });
+        return;
+    }
+    const getUserById = db.prepare('SELECT * FROM users WHERE id = ?');
+    const user: any = getUserById.get(req.session.userId);
+    if (!user){
+        res.status(404).json({ error: 'user does not exist. How\'d you get a session?'});
+        return;
+    }
+    res.json({id: user.id, email: user.email});
 });
 
 export default authRoutes;

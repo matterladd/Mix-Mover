@@ -36,7 +36,7 @@ app.get("/", (req, res) => {
 
 app.use('/auth', authRoutes); // mount auth flow
 
-app.get(/.*/, (req, res) => {
+app.get(/.*/, (req, res) => { // catch-all
     res.sendFile(path.resolve('', '../client/index.html'));
 });
 
