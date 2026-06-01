@@ -1,14 +1,10 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-
-interface User {
-  id: number;
-  email: string;
-}
+import type { User } from '../types'
 
 const AuthContext = createContext<User | null>(null); // user's info
 
 export function AuthProvider({ children }: { children: React.ReactNode}) {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState<User | null>(null);
     
     useEffect(() => {
         const fetchUser = async () => { // TODO: error checking
