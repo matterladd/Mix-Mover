@@ -4,11 +4,11 @@ import bcrypt from 'bcrypt';
 import { getUserByEmail, getUserById, addUser } from '../db/queries.ts';
 
 const SALT_ROUNDS = 12;
-const auth_routes = Router();
+const app_auth_routes = Router();
 
-auth_routes.use(express.json()); // expect and parse json requests
+app_auth_routes.use(express.json()); // expect and parse json requests
 
-auth_routes.post('/login', async (req, res) => { // TODO: are async functions handled correctly by express?
+app_auth_routes.post('/login', async (req, res) => { // TODO: are async functions handled correctly by express?
     const { email, password } = req.body;
     const user = getUserByEmail.get(email);
     if (user) { // TODO: logic here can be improved
@@ -24,7 +24,7 @@ auth_routes.post('/login', async (req, res) => { // TODO: are async functions ha
     res.status(401).json({ error: 'Invalid credentials' });
 });
 
-auth_routes.post('/signup', async (req, res) => {
+app_auth_routes.post('/signup', async (req, res) => {
     const { email, password } = req.body;
     if (getUserByEmail.get(email)) { // returns undefined if not found in table
         res.status(401).json({ error: 'User already exists'});
@@ -35,17 +35,4 @@ auth_routes.post('/signup', async (req, res) => {
     res.status(200).json({ success: true });
 });
 
-auth_routes.get('/me', (req, res) => {
-    if (!req.session.user_id) {
-        res.status(401).json({ error: 'not logged in' });
-        return;
-    }
-    const user: any = getUserById.get(req.session.user_id);
-    if (!user){
-        res.status(404).json({ error: 'user does not exist. How\'d you get a session?'});
-        return;
-    }
-    res.json({id: user.id, email: user.email});
-});
-
-export default auth_routes;
+export default app_auth_routes;

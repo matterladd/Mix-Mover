@@ -3,13 +3,13 @@ import 'express-session'; // include for types
 import { User, Token, Playlist, SpotifyTokenRefreshObj } from '../types';
 import { addTokensForUser } from '../db/queries.ts';
 
-const spotify_routes = Router();
+const spotify_auth_routes = Router();
 const accounts_url = 'https://accounts.spotify.com'
 const api_url = 'https://api.spotify.com'
 
-spotify_routes.use(express.json());
+spotify_auth_routes.use(express.json());
 
-spotify_routes.get('/', (req, res) => { // begin the auth flow using Authorization Code Flow
+spotify_auth_routes.get('/', (req, res) => { // begin the auth flow using Authorization Code Flow
     const state = String(req.session.user_id); // Use the state to encode the user id which goes around the strict cookies // TODO: is this safe?
     const scope = 'user-read-private user-read-email'; // all scopes needed for app
     const query_params = new URLSearchParams({
@@ -22,7 +22,7 @@ spotify_routes.get('/', (req, res) => { // begin the auth flow using Authorizati
     res.redirect(`${accounts_url}/authorize?${query_params.toString()}`);
 });
 
-spotify_routes.get('/callback', async (req, res) => {
+spotify_auth_routes.get('/callback', async (req, res) => {
     const auth_code = String(req.query.code);
     const state = req.query.state
     try {
@@ -56,4 +56,4 @@ spotify_routes.get('/callback', async (req, res) => {
     res.redirect('http://127.0.0.1:5173/');
 });
 
-export default spotify_routes;
+export default spotify_auth_routes;
