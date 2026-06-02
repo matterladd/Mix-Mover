@@ -4,11 +4,11 @@ import bcrypt from 'bcrypt';
 import { getUserByEmail, getUserById, addUser } from '../db/queries.ts';
 
 const SALT_ROUNDS = 12;
-const authRoutes = Router();
+const auth_routes = Router();
 
-authRoutes.use(express.json()); // expect and parse json requests
+auth_routes.use(express.json()); // expect and parse json requests
 
-authRoutes.post('/login', async (req, res) => { // TODO: are async functions handled correctly by express?
+auth_routes.post('/login', async (req, res) => { // TODO: are async functions handled correctly by express?
     const { email, password } = req.body;
     const user = getUserByEmail.get(email);
     if (user) { // TODO: logic here can be improved
@@ -17,14 +17,14 @@ authRoutes.post('/login', async (req, res) => { // TODO: are async functions han
             res.status(401).json({ error: 'Invalid credentials' });
             return;
         }
-        req.session.userId = user.id;
+        req.session.user_id = user.id;
         res.status(200).json({ success: true });
         return;
     }
     res.status(401).json({ error: 'Invalid credentials' });
 });
 
-authRoutes.post('/signup', async (req, res) => {
+auth_routes.post('/signup', async (req, res) => {
     const { email, password } = req.body;
     if (getUserByEmail.get(email)) { // returns undefined if not found in table
         res.status(401).json({ error: 'User already exists'});
@@ -35,12 +35,12 @@ authRoutes.post('/signup', async (req, res) => {
     res.status(200).json({ success: true });
 });
 
-authRoutes.get('/me', (req, res) => {
-    if (!req.session.userId) {
+auth_routes.get('/me', (req, res) => {
+    if (!req.session.user_id) {
         res.status(401).json({ error: 'not logged in' });
         return;
     }
-    const user: any = getUserById.get(req.session.userId);
+    const user: any = getUserById.get(req.session.user_id);
     if (!user){
         res.status(404).json({ error: 'user does not exist. How\'d you get a session?'});
         return;
@@ -48,4 +48,4 @@ authRoutes.get('/me', (req, res) => {
     res.json({id: user.id, email: user.email});
 });
 
-export default authRoutes;
+export default auth_routes;

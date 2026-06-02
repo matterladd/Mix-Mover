@@ -4,6 +4,6 @@ export {};  // does nothing except make this a module file.
 
 declare module 'express-session' { // types for custom session data
   interface SessionData {
-    userId: number;
+    user_id: number;
   }
 }

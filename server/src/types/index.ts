@@ -24,3 +24,11 @@ export interface Playlist {
     name: string;
     created_at: string | null;
 }
+
+export interface SpotifyTokenRefreshObj {
+    access_token: string,
+    token_type: string,
+    expires_in: string,
+    refresh_token: string,
+    scope: string
+}

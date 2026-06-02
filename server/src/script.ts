@@ -2,7 +2,8 @@ import express from 'express';
 import session from 'express-session';
 import SqliteStore from 'better-sqlite3-session-store';
 import path from 'node:path'
-import authRoutes from './routes/auth.ts'
+import auth_routes from './routes/auth.ts'
+import spotify_routes from './routes/spotify.ts';
 import './db/schema.ts' // runs once to initialize db
 import db from './db/client.ts'
 
@@ -34,7 +35,8 @@ app.get("/", (req, res) => {
     res.send("Hello world!");
 });
 
-app.use('/auth', authRoutes); // mount auth flow
+app.use('/auth', auth_routes); // mount auth flow
+app.use('/spotify_auth', spotify_routes); // mount spotify routes
 
 app.get(/.*/, (req, res) => { // catch-all
     res.sendFile(path.resolve('', '../client/index.html'));
