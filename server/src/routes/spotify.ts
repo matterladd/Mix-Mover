@@ -10,7 +10,7 @@ const api_url = 'https://api.spotify.com'
 spotify_routes.use(express.json());
 
 spotify_routes.get('/', (req, res) => { // begin the auth flow using Authorization Code Flow
-    const state = req.session.user_id; // Use the state to encode the user id which goes around the strict cookies // TODO: is this safe?
+    const state = String(req.session.user_id); // Use the state to encode the user id which goes around the strict cookies // TODO: is this safe?
     const scope = 'user-read-private user-read-email'; // all scopes needed for app
     const query_params = new URLSearchParams({
         client_id: process.env.SPOTIFY_CLIENT_ID!, // TODO: why `!`?
@@ -23,10 +23,10 @@ spotify_routes.get('/', (req, res) => { // begin the auth flow using Authorizati
 });
 
 spotify_routes.get('/callback', async (req, res) => {
-    const auth_code = req.query.code;
+    const auth_code = String(req.query.code);
     const state = req.query.state
     try {
-        if (Number(state) != 1) throw new Error(`state does not match, state ${state}`); // TODO: fix hardcoded
+        if (state != '1') throw new Error(`state does not match, state ${state}`); // TODO: fix hardcoded
         const response = await fetch(`${accounts_url}/api/token`, {
             method: 'POST',
             headers: {

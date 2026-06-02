@@ -1,4 +1,4 @@
-import db from './client';
+import db from './client.ts';
 
 // uses `exec` instead of `prepare` because this code is only run once
 db.exec(`
@@ -17,6 +17,7 @@ db.exec(`
         refresh_token TEXT,
         expires_at DATETIME,
         FOREIGN KEY (user_id) REFERENCES users(id)
+        UNIQUE (user_id, service)
     );
 
     CREATE TABLE IF NOT EXISTS playlists ( 

@@ -11,7 +11,7 @@ export const addTokensForUser = db.transaction((t: Token) => {
 });
 
 const insertSpotifyToken = db.prepare<[number, string, string, string | null, string | null], Token>(`
-    INSERT INTO tokens (user_id, service, access_token, refresh_token, expires_at)
+    INSERT OR REPLACE INTO tokens (user_id, service, access_token, refresh_token, expires_at)
     VALUES (?, ?, ?, ?, ?)
 `);
 

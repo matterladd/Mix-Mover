@@ -4,8 +4,8 @@ import SqliteStore from 'better-sqlite3-session-store';
 import path from 'node:path'
 import auth_routes from './routes/auth.ts'
 import spotify_routes from './routes/spotify.ts';
-import './db/schema.ts' // runs once to initialize db
 import db from './db/client.ts'
+import './db/schema.ts' // runs once to initialize db
 
 const app = express();
 const port = 3000;
