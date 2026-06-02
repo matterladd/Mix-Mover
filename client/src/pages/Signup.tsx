@@ -8,15 +8,17 @@ export default function Signup() {
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault(); // stops the default form submit behavior (sending http)
 
-        const res = await fetch('/auth/signup', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include', // tells browser to send/receive cookies
-            body: JSON.stringify({ email, password })
-        });
-
-        if (res.ok) {
-            navigate('/Dashboard');
+        try {
+            const res = await fetch('/auth/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include', // tells browser to send/receive cookies
+                body: JSON.stringify({ email, password })
+            });
+            if (!res.ok) throw new Error(`signup failed, status: ${res.status}`);
+            navigate('/dashboard')
+        } catch (err) {
+            console.error(err);
         }
     }
 

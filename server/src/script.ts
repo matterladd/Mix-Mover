@@ -45,5 +45,5 @@ const server = app.listen(port, '127.0.0.1', () => {
 });
 
 server.on('error', (err) => {
-    console.log('Sever failed to start:', err);
+    console.error('Sever failed to start:', err);
 });

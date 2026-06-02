@@ -13,7 +13,7 @@ function App() {
       <h1>Playlist Converter</h1>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path="*" element={<NotFound />} />
