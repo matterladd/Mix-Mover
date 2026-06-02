@@ -20,7 +20,7 @@ app.use(session({
             intervalMs: 900000 // clear expired sessions every 15 minutes (global timer)
         }
     }),
-    secret: process.env.SESSION_SECRET!,
+    secret: process.env.EXPRESS_SESSION_SECRET!,
     cookie: {
         httpOnly: true, // prevents JS access to cookie (security)
         secure: false, // TODO edit to true in prod (need HTTPS)
