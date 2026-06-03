@@ -1,7 +1,9 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { useAuthContext } from '../context/AuthContext';
 
 
 export default function NavBar() {
+    const user = useAuthContext();
     return (
         <>
             <Link to="/">Home</Link>
@@ -10,9 +12,7 @@ export default function NavBar() {
             <span> | </span>            
             <Link to="/signup">Sign up</Link>
             <span> | </span>
-            <a href='/auth'>Authorize your account</a>
-            <span> | </span>
-            <Link to="dashboard">Dashboard</Link>
+            {user !== null && <Link to="dashboard">Dashboard</Link>}
         </>
     );
 }
