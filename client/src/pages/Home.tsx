@@ -1,7 +1,7 @@
 import { useAuthContext } from "../context/AuthContext";
 
 export default function Home() {
-    const user = useAuthContext();
+    const { user } = useAuthContext();
 
     return (
         <>

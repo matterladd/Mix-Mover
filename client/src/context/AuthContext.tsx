@@ -1,7 +1,15 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import type { User } from '../types'
 
-const AuthContext = createContext<User | null>(null); // user's info
+interface AuthContextType {
+     user: User | null,
+     setUser: (user: User | null) => void;
+}
+
+const AuthContext = createContext<AuthContextType>({
+    user: null,
+    setUser: () => {}
+}); 
 
 export function AuthProvider({ children }: { children: React.ReactNode}) {
     const [user, setUser] = useState<User | null>(null);
@@ -22,7 +30,7 @@ export function AuthProvider({ children }: { children: React.ReactNode}) {
     }, []);
 
     return (
-        <AuthContext value={user}>
+        <AuthContext value={{user, setUser}}>
             <p>Logged in: {user?.email || 'no'}</p>
             {children}
         </AuthContext>

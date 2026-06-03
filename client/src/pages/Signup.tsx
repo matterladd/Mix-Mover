@@ -9,17 +9,18 @@ export default function Signup() {
         e.preventDefault(); // stops the default form submit behavior (sending http)
 
         try {
-            const res = await fetch('/auth/signup', {
+            const res = await fetch('/api/auth/signup', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 credentials: 'include', // tells browser to send/receive cookies
                 body: JSON.stringify({ email, password })
             });
             if (!res.ok) throw new Error(`signup failed, status: ${res.status}`);
-            navigate('/dashboard')
         } catch (err) {
             console.error(err);
+            return; // if failed, stop execution here
         }
+        navigate('/dashboard');
     }
 
     return (
