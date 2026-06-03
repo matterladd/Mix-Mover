@@ -33,12 +33,13 @@ app.use(session({
 }));
 
 app.get("/", (req, res) => {
-    res.send("Hello world!");
+    res.send("Hello world! This is the root of the backend");
 });
 
-app.use('/auth', app_auth_routes);              // mount app auth routes
-app.use('/spotify_auth', spotify_auth_routes);   // mount spotify auth routes
-app.use('/me', app_api_routes);             // mount app api routes
+// * Note that we use `/api` for every backend route!
+app.use('/api/auth', app_auth_routes);              // mount app auth routes
+app.use('/api/spotify_auth', spotify_auth_routes);  // mount spotify auth routes
+app.use('/api/app', app_api_routes);                // mount app api routes
 
 app.get(/.*/, (req, res) => { // catch-all
     res.sendFile(path.resolve('', '../client/index.html'));

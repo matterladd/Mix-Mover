@@ -6,6 +6,7 @@ import { addTokensForUser } from '../db/queries.ts';
 const spotify_auth_routes = Router();
 const accounts_url = 'https://accounts.spotify.com'
 const api_url = 'https://api.spotify.com'
+const redirect_uri = 'http://127.0.0.1:3000/api/spotify_auth/callback';
 
 spotify_auth_routes.use(express.json());
 
@@ -15,7 +16,7 @@ spotify_auth_routes.get('/', (req, res) => { // begin the auth flow using Author
     const query_params = new URLSearchParams({
         client_id: process.env.SPOTIFY_CLIENT_ID!, // TODO: why `!`?
         response_type: 'code',
-        redirect_uri: 'http://127.0.0.1:3000/spotify_auth/callback',
+        redirect_uri: redirect_uri,
         state: state,
         scope: scope
     });
@@ -36,7 +37,7 @@ spotify_auth_routes.get('/callback', async (req, res) => {
             body: new URLSearchParams({
               grant_type: 'authorization_code',
               code: auth_code,
-              redirect_uri: 'http://127.0.0.1:3000/spotify_auth/callback'
+              redirect_uri: redirect_uri
             })
         });
         if (!response.ok) throw new Error('unable to get api token, status ' + response.status);

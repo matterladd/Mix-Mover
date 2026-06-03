@@ -7,9 +7,7 @@ export default defineConfig({
     host: '127.0.0.1', 
     port: 5173,
     proxy: {
-      '/auth': 'http://127.0.0.1:3000',
-      '/spotify': 'http://127.0.0.1:3000',
-      '/apple': 'http://127.0.0.1:3000',
+      '/api': 'http://127.0.0.1:3000'
     }
   },
   plugins: [react()],

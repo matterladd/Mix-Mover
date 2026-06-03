@@ -9,7 +9,7 @@ export function AuthProvider({ children }: { children: React.ReactNode}) {
     useEffect(() => { // useEffect callback cannot itself be async but can contain an async function
         const fetchUser = async () => {
             try {
-                const res = await fetch('/me', { credentials: 'include' });
+                const res = await fetch('/api/app/me', { credentials: 'include' });
                 if (!res.ok) throw new Error(`failed to fetch user, status: ${res.status}`);
                 const data = await res.json();
                 setUser(data);
