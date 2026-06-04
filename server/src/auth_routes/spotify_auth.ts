@@ -5,7 +5,6 @@ import { addTokensForUser, getSpotifyTokens } from '../db/queries.ts';
 
 const spotify_auth_routes = Router();
 const accounts_url = 'https://accounts.spotify.com'
-const api_url = 'https://api.spotify.com'
 const redirect_uri = 'http://127.0.0.1:3000/api/spotify_auth/callback';
 
 spotify_auth_routes.use(express.json());
@@ -91,6 +90,7 @@ spotify_auth_routes.post('/refresh_access', async (req, res) => { // TODO POST o
             expires_at: data.expires_in // TODO: inacurrate (at != in)
         }
         addTokensForUser(token_obj);
+        res.json({ success: true });
 
     } catch (err) {
         console.error(err);

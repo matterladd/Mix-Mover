@@ -5,6 +5,7 @@ import path from 'node:path'
 import app_auth_routes from './auth_routes/app_auth.ts'
 import app_api_routes from './api_routes/app_api.ts'
 import spotify_auth_routes from './auth_routes/spotify_auth.ts';
+import spotify_api_routes from './api_routes/spotify_api.ts'
 import db from './db/client.ts'
 import './db/schema.ts' // runs once to initialize db
 
@@ -38,8 +39,9 @@ app.get("/", (req, res) => {
 
 // * Note that we use `/api` for every backend route!
 app.use('/api/auth', app_auth_routes);              // mount app auth routes
-app.use('/api/spotify_auth', spotify_auth_routes);  // mount spotify auth routes
 app.use('/api/app', app_api_routes);                // mount app api routes
+app.use('/api/spotify_auth', spotify_auth_routes);  // mount spotify auth routes
+app.use('/api/spotify', spotify_api_routes);
 
 app.get(/.*/, (req, res) => { // catch-all
     res.sendFile(path.resolve('', '../client/index.html'));
