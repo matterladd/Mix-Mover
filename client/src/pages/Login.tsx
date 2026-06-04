@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../context/AuthContext";
 
 export default function Login() {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState(""); // TODO: probably unsafe storing this as a state?
     const [isLoggedIn, setIsLoggedIn] = useState(true); // set for first time display
+    const { setUser } = useAuthContext();
     
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault(); // stops the default form submit behavior (sending http)
@@ -18,8 +20,8 @@ export default function Login() {
                 body: JSON.stringify({ email, password })
             });
             if (!res.ok) throw new Error(`login failed, status: ${res.status}`);
-
-            navigate('/dashboard');
+            setUser({id: null, email: email});
+            navigate('/');
         } catch (err) {
             console.error(err);
             setIsLoggedIn(false);

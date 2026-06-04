@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../context/AuthContext";
 
 export default function Signup() {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState(""); // TODO: probably unsafe storing this as a state?
+    const { setUser } = useAuthContext();
+
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault(); // stops the default form submit behavior (sending http)
 
@@ -16,11 +19,11 @@ export default function Signup() {
                 body: JSON.stringify({ email, password })
             });
             if (!res.ok) throw new Error(`signup failed, status: ${res.status}`);
+            setUser({id: null, email: email});
+            navigate('/dashboard');
         } catch (err) {
             console.error(err);
-            return; // if failed, stop execution here
         }
-        navigate('/dashboard');
     }
 
     return (

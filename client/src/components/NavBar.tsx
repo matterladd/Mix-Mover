@@ -30,6 +30,8 @@ export default function NavBar() {
             <Link to="/signup">Sign up</Link>
             <span> | </span>
             {user !== null && <Link to="dashboard">Dashboard</Link>}
+            <span> | </span>
+            {user !== null && <p>Logged in as: {user.email}</p>}
         </>
     );
 }
