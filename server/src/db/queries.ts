@@ -1,5 +1,5 @@
 import db from './client.ts'
-import { User, Token, Playlist } from '../types';
+import { User, Token, Playlist, SpotifyUser } from '../types';
 
 export const getUserById =      db.prepare<[number], User>('SELECT * FROM users WHERE id = ?');
 export const getUserByEmail =   db.prepare<[string], User>('SELECT * FROM users WHERE email = ?');
@@ -11,6 +11,10 @@ export const addTokensForUser = db.transaction((t: Token) => {
 });
 
 export const getSpotifyTokens = db.prepare<[number], Token>('SELECT * FROM tokens WHERE user_id = ? AND service = \'spotify\';');
+export const addSpotifyUser = db.prepare<[number, string, string | null, string | null, string | null, string | null, string | null], SpotifyUser>(`
+    INSERT OR REPLACE INTO spotify_users (user_id, account_id, display_name, external_url, href, image_url, uri) 
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+`);
 
 const insertSpotifyToken = db.prepare<[number, string, string, string | null, string | null], Token>(`
     INSERT OR REPLACE INTO tokens (user_id, service, access_token, refresh_token, expires_at)

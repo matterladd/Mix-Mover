@@ -32,3 +32,14 @@ export interface SpotifyTokenRefreshObj {
     refresh_token: string,
     scope: string
 }
+
+export interface SpotifyUser {
+    id: number;
+    user_id: number;
+    account_id: string;
+    display_name: string | null;
+    external_url: string | null;
+    href: string | null;
+    image_url: string | null;
+    uri: string | null;
+}

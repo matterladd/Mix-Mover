@@ -1,3 +1,5 @@
+import './db/schema.ts' // runs once to initialize db
+import db from './db/client.ts'
 import express from 'express';
 import session from 'express-session';
 import SqliteStore from 'better-sqlite3-session-store';
@@ -6,8 +8,6 @@ import app_auth_routes from './auth_routes/app_auth.ts'
 import app_api_routes from './api_routes/app_api.ts'
 import spotify_auth_routes from './auth_routes/spotify_auth.ts';
 import spotify_api_routes from './api_routes/spotify_api.ts'
-import db from './db/client.ts'
-import './db/schema.ts' // runs once to initialize db
 
 const app = express();
 const port = 3000;

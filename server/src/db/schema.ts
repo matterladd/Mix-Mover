@@ -31,4 +31,16 @@ db.exec(`
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id)
     );
+
+    CREATE TABLE IF NOT EXISTS spotify_users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        account_id TEXT NOT NULL,
+        display_name TEXT,
+        external_url TEXT,
+        href TEXT,
+        image_url TEXT,
+        uri TEXT,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+    );
 `);
