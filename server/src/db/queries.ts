@@ -15,6 +15,7 @@ export const addSpotifyUser = db.prepare<[number, string, string | null, string 
     INSERT OR REPLACE INTO spotify_users (user_id, account_id, display_name, external_url, href, image_url, uri) 
     VALUES (?, ?, ?, ?, ?, ?, ?)
 `);
+export const getSpotifyUser = db.prepare<[number], SpotifyUser>('SELECT * FROM spotify_users WHERE user_id = ?');
 
 const insertSpotifyToken = db.prepare<[number, string, string, string | null, string | null], Token>(`
     INSERT OR REPLACE INTO tokens (user_id, service, access_token, refresh_token, expires_at)

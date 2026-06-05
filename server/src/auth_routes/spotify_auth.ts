@@ -14,7 +14,7 @@ spotify_auth_routes.use(express.json());
  */
 spotify_auth_routes.get('/', (req, res) => {
     const state = String(req.session.user_id); // Use the state to encode the user id which goes around the strict cookies // TODO: is this safe?
-    const scope = 'user-read-private user-read-email'; // all scopes needed for app
+    const scope = 'user-read-private user-read-email playlist-modify-public playlist-modify-private'; // all scopes needed for app
     const query_params = new URLSearchParams({
         client_id: process.env.SPOTIFY_CLIENT_ID!, // TODO: why `!`?
         response_type: 'code',
@@ -61,41 +61,6 @@ spotify_auth_routes.get('/callback', async (req, res) => {
         console.error(err);
     }
     res.redirect('http://127.0.0.1:5173/');
-});
-
-/**
- * Refresh a user's access token
- */
-spotify_auth_routes.post('/refresh_access', async (req, res) => { // TODO POST or GET?
-    const token = getSpotifyTokens.get(req.session.user_id);
-    try {
-        const response = await fetch(`${accounts_url}/api/token`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                Authorization: `Basic ${Buffer.from(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET).toString('base64')}`
-            },
-            body: new URLSearchParams({
-                grant_type: 'refresh_token',
-                refresh_token: token.access_token
-            })
-        });
-        if (!response.ok) throw new Error('unable to refresh api token, status ' + response.status);
-        const data: SpotifyTokenRefreshObj = await response.json();
-        const token_obj: Token = {
-            user_id: req.session.user_id,
-            service: 'spotify',
-            access_token: data.access_token,
-            refresh_token: data.refresh_token,
-            expires_at: data.expires_in // TODO: inacurrate (at != in)
-        }
-        addTokensForUser(token_obj);
-        res.json({ success: true });
-
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'failed to refresh access token' });
-    }
 });
 
 export default spotify_auth_routes;
