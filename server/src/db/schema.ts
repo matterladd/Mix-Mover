@@ -24,9 +24,11 @@ db.exec(`
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER NOT NULL,
         source_service TEXT NOT NULL,
-        target_service TEXT NOT NULL,
+        target_service TEXT,
         source_id TEXT NOT NULL,
-        target_id TEXT NOT NULL,
+        target_id TEXT,
+        source_url TEXT NOT NULL,
+        target_url TEXT,
         name TEXT NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id)

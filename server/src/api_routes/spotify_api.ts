@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
 import 'express-session'; // include for types
 import { User, Token, Playlist, SpotifyUser } from '../types';
-import { addSpotifyUser, getSpotifyTokens, getSpotifyUser } from '../db/queries.ts';
+import { addSpotifyUser, getSpotifyTokens, getSpotifyUser, addPlaylist } from '../db/queries.ts';
 import refresh_spotify_access_token from '../services/refresh_access_tokens.ts';
 
 const spotify_api_routes = Router();
@@ -71,7 +71,19 @@ spotify_api_routes.post('/playlists', async (req, res) => {
         });
         const data = await response.json();
         if (!response.ok) throw new Error(`failed to create new playlist\nstatus ${response.status}\n${data.error.message}`);
-        res.json({ success: true });
+
+        addPlaylist.run( // TODO: error checking
+            req.session.user_id!,
+            'spotify',
+            null,
+            data.id,
+            null,
+            data.external_urls.spotify,
+            null,
+            data.name
+        );
+
+        res.json(data); // send response to the frontend
     } catch (err) {
         console.error(err);
         res.json({error: 'failed to create new playlist'});

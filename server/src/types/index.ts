@@ -18,9 +18,11 @@ export interface Playlist {
     id?: number;
     user_id: number;
     source_service: string;
-    target_service: string;
+    target_service: string | null;
     source_id: string;
-    target_id: string;
+    target_id: string | null;
+    source_url: string;
+    target_url: string | null;
     name: string;
     created_at: string | null;
 }
