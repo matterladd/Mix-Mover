@@ -4,7 +4,7 @@ import { SpotifyTokenRefreshObj, Token} from "../types";
 const accounts_url = 'https://accounts.spotify.com'
 
 export default async function refresh_spotify_access_token(user_id: number) {
-    const token = getSpotifyTokens.get(user_id);
+    const token = getSpotifyTokens.get(user_id); // TODO: if token is undefined...
     try {
         const response = await fetch(`${accounts_url}/api/token`, {
             method: 'POST',
@@ -14,7 +14,7 @@ export default async function refresh_spotify_access_token(user_id: number) {
             },
             body: new URLSearchParams({
                 grant_type: 'refresh_token',
-                refresh_token: token.refresh_token!
+                refresh_token: token!.refresh_token!
             })
         });
         const data = await response.json();

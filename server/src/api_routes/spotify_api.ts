@@ -13,7 +13,7 @@ spotify_api_routes.use(express.json());
  * Retrieve data about the user
  */
 spotify_api_routes.get('/me', async (req, res) => {
-    const spotify_user: SpotifyUser = getSpotifyUser.get(req.session.user_id);
+    const spotify_user: SpotifyUser | undefined = getSpotifyUser.get(req.session.user_id!);
 
     // use database data first if it exists
     if (spotify_user) {
@@ -21,19 +21,21 @@ spotify_api_routes.get('/me', async (req, res) => {
         res.json(spotify_user);
 
     } else {
-        await refresh_spotify_access_token(req.session.user_id); // TODO: May not need to refresh every time
-        const tokens = getSpotifyTokens.get(req.session.user_id);
+        await refresh_spotify_access_token(req.session.user_id!); // TODO: May not need to refresh every time
+        const tokens = getSpotifyTokens.get(req.session.user_id!);
+        // TODO: if token expired...
+        // TODO: if token does not exist (returns undefined)...
         try {
             const response = await fetch(`${api_url}/me`, {
                 method: 'GET',
                 headers: {
-                    Authorization: `Bearer ${tokens.access_token}`
+                    Authorization: `Bearer ${tokens!.access_token}`
                } 
             });
-            if (!response.ok) throw new Error('could not fetch user info. status ' + response.status);
-            const data: SpotifyUser = await response.json();
+            const data = await response.json();
+            if (!response.ok) throw new Error(`could not fetch user info\nstatus ${response.status}\n${data.error.message}`);
             addSpotifyUser.run( // TODO: error checking
-                req.session.user_id,
+                req.session.user_id!,
                 data.account_id,
                 data.display_name,
                 data.external_urls.spotify,
@@ -55,14 +57,14 @@ spotify_api_routes.get('/me', async (req, res) => {
  * @param req body contains exact JSON needed by Spotify
  */
 spotify_api_routes.post('/playlists', async (req, res) => {
-    await refresh_spotify_access_token(req.session.user_id); // TODO: May not need to refresh every time
-    const tokens = getSpotifyTokens.get(req.session.user_id);
+    await refresh_spotify_access_token(req.session.user_id!); // TODO: May not need to refresh every time
+    const tokens = getSpotifyTokens.get(req.session.user_id!);
     const body = req.body;
     try {
         const response = await fetch(`${api_url}/me/playlists`, {
             method: 'POST',
             headers: { 
-                Authorization: `Bearer ${tokens.access_token}`,
+                Authorization: `Bearer ${tokens!.access_token}`,
                 'Content-Type': 'application/json'
             }, 
             body: JSON.stringify(body)

@@ -1,12 +1,12 @@
 export interface User {
-    id: number;
+    id?: number;
     email: string;
     password_hash: string;
     created_at: string;
 }
 
 export interface Token {
-    id: number;
+    id?: number;
     user_id: number;
     service: string;
     access_token: string;
@@ -15,7 +15,7 @@ export interface Token {
 }
 
 export interface Playlist {
-    id: number;
+    id?: number;
     user_id: number;
     source_service: string;
     target_service: string;
