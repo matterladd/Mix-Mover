@@ -1,5 +1,5 @@
 import { getSpotifyTokens, addTokensForUser } from "../db/queries";
-import { SpotifyTokenRefreshObj } from "../types";
+import { SpotifyTokenRefreshObj, Token} from "../types";
 
 const accounts_url = 'https://accounts.spotify.com'
 
@@ -14,11 +14,11 @@ export default async function refresh_spotify_access_token(user_id: number) {
             },
             body: new URLSearchParams({
                 grant_type: 'refresh_token',
-                refresh_token: token.access_token
+                refresh_token: token.refresh_token!
             })
         });
-        if (!response.ok) throw new Error('unable to refresh api token, status ' + response.status);
-        const data: SpotifyTokenRefreshObj = await response.json();
+        const data = await response.json();
+        if (!response.ok) throw new Error(`unable to refresh access token\nstatus ${response.status}`);
         const token_obj: Token = {
             user_id: user_id,
             service: 'spotify',

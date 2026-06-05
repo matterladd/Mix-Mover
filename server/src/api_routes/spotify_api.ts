@@ -21,7 +21,7 @@ spotify_api_routes.get('/me', async (req, res) => {
         res.json(spotify_user);
 
     } else {
-        refresh_spotify_access_token(req.session.user_id); // TODO: May not need to refresh every time
+        await refresh_spotify_access_token(req.session.user_id); // TODO: May not need to refresh every time
         const tokens = getSpotifyTokens.get(req.session.user_id);
         try {
             const response = await fetch(`${api_url}/me`, {
@@ -55,10 +55,9 @@ spotify_api_routes.get('/me', async (req, res) => {
  * @param req body contains exact JSON needed by Spotify
  */
 spotify_api_routes.post('/playlists', async (req, res) => {
+    await refresh_spotify_access_token(req.session.user_id); // TODO: May not need to refresh every time
     const tokens = getSpotifyTokens.get(req.session.user_id);
-    console.log(tokens)
     const body = req.body;
-    console.log(body)
     try {
         const response = await fetch(`${api_url}/me/playlists`, {
             method: 'POST',
@@ -68,7 +67,8 @@ spotify_api_routes.post('/playlists', async (req, res) => {
             }, 
             body: JSON.stringify(body)
         });
-        if (!response.ok) throw new Error(`failed to create new playlist, status ${response.status}`);
+        const data = await response.json();
+        if (!response.ok) throw new Error(`failed to create new playlist\nstatus ${response.status}\n${data.error.message}`);
         res.json({ success: true });
     } catch (err) {
         console.error(err);
