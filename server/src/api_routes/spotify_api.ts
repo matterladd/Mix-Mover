@@ -9,6 +9,9 @@ const api_url = 'https://api.spotify.com/v1';
 
 spotify_api_routes.use(express.json());
 
+/**
+ * Retrieve data about the user
+ */
 spotify_api_routes.get('/me', async (req, res) => {
     const spotify_user: SpotifyUser = getSpotifyUser.get(req.session.user_id);
 
@@ -44,6 +47,32 @@ spotify_api_routes.get('/me', async (req, res) => {
             console.error(err);
             res.status(500).json({ error: 'failed to find user info' });
         }
+    }
+});
+
+/**
+ * Create a new playlist
+ * @param req body contains exact JSON needed by Spotify
+ */
+spotify_api_routes.post('/playlists', async (req, res) => {
+    const tokens = getSpotifyTokens.get(req.session.user_id);
+    console.log(tokens)
+    const body = req.body;
+    console.log(body)
+    try {
+        const response = await fetch(`${api_url}/me/playlists`, {
+            method: 'POST',
+            headers: { 
+                Authorization: `Bearer ${tokens.access_token}`,
+                'Content-Type': 'application/json'
+            }, 
+            body: JSON.stringify(body)
+        });
+        if (!response.ok) throw new Error(`failed to create new playlist, status ${response.status}`);
+        res.json({ success: true });
+    } catch (err) {
+        console.error(err);
+        res.json({error: 'failed to create new playlist'});
     }
 });
 
