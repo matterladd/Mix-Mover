@@ -45,3 +45,14 @@ export interface SpotifyUser {
     image_url: string | null;
     uri: string | null;
 }
+
+export interface SpotifyPlaylist {
+    name: string;
+    description: string | null;
+    public: boolean;
+}
+
+export interface SpotifyTrack {
+    name: string;
+    artist: string;
+}

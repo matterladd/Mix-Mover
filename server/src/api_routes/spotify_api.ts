@@ -1,8 +1,8 @@
 import express, { Router } from 'express';
 import 'express-session'; // include for types
-import { User, Token, Playlist, SpotifyUser } from '../types';
-import { addSpotifyUser, getSpotifyTokens, getSpotifyUser, addPlaylist } from '../db/queries.ts';
-import refresh_spotify_access_token from '../services/refresh_access_tokens.ts';
+import { SpotifyUser } from '../types';
+import { addSpotifyUser, getSpotifyTokens, getSpotifyUser } from '../db/queries.ts';
+import { refresh_spotify_access_token } from '../services/spotify_services.ts';
 
 const spotify_api_routes = Router();
 const api_url = 'https://api.spotify.com/v1';
@@ -52,42 +52,4 @@ spotify_api_routes.get('/me', async (req, res) => {
     }
 });
 
-/**
- * Create a new playlist
- * @param req body contains exact JSON needed by Spotify
- */
-spotify_api_routes.post('/playlists', async (req, res) => {
-    await refresh_spotify_access_token(req.session.user_id!); // TODO: May not need to refresh every time
-    const tokens = getSpotifyTokens.get(req.session.user_id!);
-    const body = req.body;
-    try {
-        const response = await fetch(`${api_url}/me/playlists`, {
-            method: 'POST',
-            headers: { 
-                Authorization: `Bearer ${tokens!.access_token}`,
-                'Content-Type': 'application/json'
-            }, 
-            body: JSON.stringify(body)
-        });
-        const data = await response.json();
-        if (!response.ok) throw new Error(`failed to create new playlist\nstatus ${response.status}\n${data.error.message}`);
-
-        addPlaylist.run( // TODO: error checking
-            req.session.user_id!,
-            'spotify',
-            null,
-            data.id,
-            null,
-            data.external_urls.spotify,
-            null,
-            data.name
-        );
-
-        res.json(data); // send response to the frontend
-    } catch (err) {
-        console.error(err);
-        res.json({error: 'failed to create new playlist'});
-    }
-});
-
-export default spotify_api_routes
+export default spotify_api_routes;
