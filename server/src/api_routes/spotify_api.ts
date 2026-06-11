@@ -39,7 +39,7 @@ spotify_api_routes.get('/me', async (req, res) => {
                } 
             });
             const data = await response.json();
-            if (!response.ok) throw new Error(`could not fetch user info\nstatus ${response.status}\n${data.error.message}`);
+            if (!response.ok) throw new Error(`could not fetch user info, status ${response.status}, ${data.error.message}`);
             addSpotifyUser.run( // TODO: error checking
                 req.session.user_id!,
                 data.account_id,

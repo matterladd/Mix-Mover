@@ -47,7 +47,7 @@ export async function create_spotify_playlist(user_id: number, body: SpotifyPlay
             body: JSON.stringify(body)
         });
         const data = await response.json();
-        if (!response.ok) throw new Error(`failed to create new playlist\nstatus ${response.status}\n${data.error.message}`);
+        if (!response.ok) throw new Error(`failed to create new playlist, status ${response.status}, ${data.error.message}`);
 
         addPlaylist.run( // TODO: error checking
             user_id,
@@ -82,7 +82,7 @@ export async function add_spotify_tracks(user_id: number, playlist_id: string, t
         });
 
         const data = await response.json();
-        if (!response.ok) throw new Error(`unable to add tracks to playlist\nstatus ${response.status}\n${data.error.message}`);
+        if (!response.ok) throw new Error(`unable to add tracks to playlist, status ${response.status}, ${data.error.message}`);
     } catch (err) {
         console.error(err);
     }
@@ -110,7 +110,7 @@ export async function search_spotify_track(
          * ISRC code: International Sound Recording Identifier
          * Spotify ID: internal spotify identifier
          */
-        if (!response.ok) throw new Error(`could not fetch track\nstatus ${response.status}\n${data.error.message}`);
+        if (!response.ok) throw new Error(`could not fetch track, status ${response.status}, ${data.error.message}`);
         const result = data.tracks?.items?.[0]; // access items[0] only if it exists
         return result?.uri ?? null; // null if track is not found, otherwise returns Spotify URI
     } catch (err) {

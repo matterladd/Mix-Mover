@@ -18,7 +18,7 @@ export default function Dashboard() {
                 body: JSON.stringify({ link: appleLink })
             });
             const data = await response.json();
-            if (!response.ok) throw new Error(`unsuccessful conversion\nstatus ${response.status}\n${data.error}`);
+            if (!response.ok) throw new Error(`unsuccessful conversion, status ${response.status}, ${data.error}`);
 
         } catch (err) {
             console.error(err);
