@@ -1,5 +1,5 @@
 import { getSpotifyTokens, addTokensForUser, addPlaylist } from "../db/queries";
-import { SpotifyTrack, SpotifyTokenRefreshObj, Token, SpotifyPlaylist } from "../types";
+import { Track, SpotifyTokenRefreshObj, Token, SpotifyPlaylist } from "../types";
 
 const accounts_url = 'https://accounts.spotify.com';
 const api_url = 'https://api.spotify.com/v1';

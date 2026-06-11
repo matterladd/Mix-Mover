@@ -52,7 +52,12 @@ export interface SpotifyPlaylist {
     public: boolean;
 }
 
-export interface SpotifyTrack {
+export interface Track {
     name: string;
     artist: string;
+}
+
+export interface ApplePlaylist {
+    name: string | undefined;
+    tracks: Track[];
 }
