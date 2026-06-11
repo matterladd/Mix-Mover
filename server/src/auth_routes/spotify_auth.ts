@@ -49,7 +49,7 @@ spotify_auth_routes.get('/callback', async (req, res) => {
         if (!response.ok) throw new Error('unable to get api token, status ' + response.status);
         const data: SpotifyTokenRefreshObj = await response.json();
         const token_obj: Token = {
-            user_id: state,
+            user_id: Number(state),
             service: 'spotify',
             access_token: data.access_token,
             refresh_token: data.refresh_token,

@@ -24,7 +24,7 @@ export async function refresh_spotify_access_token(user_id: number) {
             user_id: user_id,
             service: 'spotify',
             access_token: data.access_token,
-            refresh_token: data.refresh_token,
+            refresh_token: data.refresh_token ?? token!.refresh_token!,
             expires_at: data.expires_in // TODO: inacurrate (at != in)
         }
         addTokensForUser(token_obj);
