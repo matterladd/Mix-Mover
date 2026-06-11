@@ -2,7 +2,13 @@ import express, { Router } from 'express';
 import 'express-session'; // include for types
 import { SpotifyUser } from '../types';
 import { addSpotifyUser, getSpotifyTokens, getSpotifyUser } from '../db/queries.ts';
-import { refresh_spotify_access_token } from '../services/spotify_services.ts';
+import { scrape_apple_playlist } from '../services/apple_services.ts';
+import { 
+    refresh_spotify_access_token, 
+    create_spotify_playlist, 
+    add_spotify_tracks, 
+    search_spotify_track
+} from '../services/spotify_services.ts';
 
 const spotify_api_routes = Router();
 const api_url = 'https://api.spotify.com/v1';
@@ -50,6 +56,45 @@ spotify_api_routes.get('/me', async (req, res) => {
             res.status(500).json({ error: 'failed to find user info' });
         }
     }
+});
+
+/**
+ * POST body contains an Apple Music playlist link
+ */
+spotify_api_routes.post('/convert-apple', async (req, res) => {
+    /**
+     * Steps:
+     * 1. Check if user has session
+     * 2. Check if user has Spotify account
+     * 3. Check if API token needs refreshed
+     * 4. Get playlist data from Apple Music
+     * 5. Create new playlist with same title on Spotify
+     * 6. Search for equivalent tracks on Spotify
+     * 7. Add tracks to the new Spotify playlist
+     * 8. Log playlist in DB
+     * 9. Return success or failure (missing tracks, etc)
+     */
+    try {
+        await refresh_spotify_access_token(req.session.user_id!); // TODO: too many refreshes
+        const { link: apple_link } = req.body as { link: string }; // unpacks body and renames link to apple_link
+        const apple_data = await scrape_apple_playlist(apple_link);
+        const spotify_playlist_data = await create_spotify_playlist(req.session.user_id!, {
+            name: apple_data.name,
+            description: null, // TODO: find description
+            public: false
+        });
+
+        // TODO: batch requests to avoid rate limiting
+        const search_results = await Promise.all(
+            apple_data.tracks.map(track => search_spotify_track(req.session.user_id!, track.name, track.artist))
+        );
+
+        await add_spotify_tracks(req.session.user_id!, spotify_playlist_data.id, search_results.filter(uri => uri !== null));
+        res.json({ success: true });
+    } catch(err) {
+        res.status(500).json({ error: 'failed' });
+    }
+
 });
 
 export default spotify_api_routes;

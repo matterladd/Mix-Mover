@@ -58,6 +58,6 @@ export interface Track {
 }
 
 export interface ApplePlaylist {
-    name: string | undefined;
+    name: string;
     tracks: Track[];
 }

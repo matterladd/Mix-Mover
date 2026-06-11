@@ -31,7 +31,7 @@ export async function scrape_apple_playlist(playlist_url: string): Promise<Apple
     await browser.close();
 
     return {
-        name: title,
+        name: title as string,
         tracks: parse_tracks(tracks as string[]) // asserting type is not null
     }
 }

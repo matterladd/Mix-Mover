@@ -19,7 +19,7 @@ export async function refresh_spotify_access_token(user_id: number) {
             })
         });
         const data = await response.json();
-        if (!response.ok) throw new Error(`unable to refresh access token\nstatus ${response.status}`);
+        if (!response.ok) throw new Error(`unable to refresh access token, status ${response.status}`);
         const token_obj: Token = {
             user_id: user_id,
             service: 'spotify',
@@ -89,7 +89,7 @@ export async function add_spotify_tracks(user_id: number, playlist_id: string, t
 }
 
 export async function search_spotify_track(
-    user_id: number, 
+    user_id: number, // TODO: Too many requests to DB, pass in API key???
     track: string, 
     artist: string
 ): Promise<string | null> {
@@ -112,7 +112,7 @@ export async function search_spotify_track(
          */
         if (!response.ok) throw new Error(`could not fetch track\nstatus ${response.status}\n${data.error.message}`);
         const result = data.tracks?.items?.[0]; // access items[0] only if it exists
-        return result?.id ?? null; // null if track is not found, otherwise returns Spotify ID
+        return result?.uri ?? null; // null if track is not found, otherwise returns Spotify URI
     } catch (err) {
         console.error(err);
         return null;
