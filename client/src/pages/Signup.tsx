@@ -20,7 +20,7 @@ export default function Signup() {
             });
             if (!res.ok) throw new Error(`signup failed, status: ${res.status}`);
             setUser({id: null, email: email});
-            navigate('/dashboard');
+            navigate('/');
         } catch (err) {
             console.error(err);
         }

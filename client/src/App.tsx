@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import NotFound from './pages/NotFound';
-import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
+import Account from './pages/Account';
 import NavBar from './components/NavBar';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -13,7 +13,7 @@ function App() {
       <h1>Playlist Converter</h1>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/account" element={<Account />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path="*" element={<NotFound />} />
