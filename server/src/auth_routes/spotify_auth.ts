@@ -32,34 +32,29 @@ spotify_auth_routes.get('/', (req, res) => {
 spotify_auth_routes.get('/callback', async (req, res) => {
     const auth_code = String(req.query.code);
     const state = req.query.state
-    try {
-        if (state != '1') throw new Error(`state does not match, state ${state}`); // TODO: fix hardcoded
-        const response = await fetch(`${accounts_url}/api/token`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                Authorization: `Basic ${Buffer.from(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET).toString('base64')}`
-            },
-            body: new URLSearchParams({
-              grant_type: 'authorization_code',
-              code: auth_code,
-              redirect_uri: redirect_uri
-            })
-        });
-        if (!response.ok) throw new Error('unable to get api token, status ' + response.status);
-        const data: SpotifyTokenRefreshObj = await response.json();
-        const token_obj: Token = {
-            user_id: Number(state),
-            service: 'spotify',
-            access_token: data.access_token,
-            refresh_token: data.refresh_token,
-            expires_at: data.expires_in // TODO: inacurrate (at != in)
-        }
-        addTokensForUser(token_obj);
-
-    } catch (err) {
-        console.error(err);
+    if (state != '1') throw new Error(`state does not match, state ${state}`); // TODO: fix hardcoded
+    const response = await fetch(`${accounts_url}/api/token`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: `Basic ${Buffer.from(process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET).toString('base64')}`
+        },
+        body: new URLSearchParams({
+            grant_type: 'authorization_code',
+            code: auth_code,
+            redirect_uri: redirect_uri
+        })
+    });
+    if (!response.ok) throw new Error('unable to get api token, status ' + response.status);
+    const data: SpotifyTokenRefreshObj = await response.json();
+    const token_obj: Token = {
+        user_id: Number(state),
+        service: 'spotify',
+        access_token: data.access_token,
+        refresh_token: data.refresh_token,
+        expires_at: data.expires_in // TODO: inacurrate (at != in)
     }
+    addTokensForUser(token_obj);
     res.redirect('http://127.0.0.1:5173/');
 });
 

@@ -41,11 +41,16 @@ app.get("/", (req, res) => {
 app.use('/api/auth', app_auth_routes);              // mount app auth routes
 app.use('/api/app', app_api_routes);                // mount app api routes
 app.use('/api/spotify_auth', spotify_auth_routes);  // mount spotify auth routes
-app.use('/api/spotify', spotify_api_routes);
+app.use('/api/spotify', spotify_api_routes);        // mount apotify api routes
 
 app.get(/.*/, (req, res) => { // catch-all
     res.sendFile(path.resolve('', '../client/index.html'));
 });
+
+// * Custom Error handler
+// app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+
+// });
 
 const server = app.listen(port, '127.0.0.1', () => {
     console.log(`App listening on port ${port}`);

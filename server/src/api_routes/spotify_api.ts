@@ -31,35 +31,30 @@ spotify_api_routes.get('/me', async (req, res) => {
         const tokens = getSpotifyTokens.get(req.session.user_id!);
         // TODO: if token expired...
         // TODO: if token does not exist (returns undefined)...
-        try {
-            const response = await fetch(`${api_url}/me`, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${tokens!.access_token}`
-               } 
-            });
-            const data = await response.json();
-            if (!response.ok) throw new Error(`could not fetch user info, status ${response.status}, ${data.error.message}`);
-            addSpotifyUser.run( // TODO: error checking
-                req.session.user_id!,
-                data.account_id,
-                data.display_name,
-                data.external_urls.spotify,
-                data.href,
-                data.image_url, // TODO: incorrect way to access the image_url
-                data.uri
-            );
-            res.json(data);
-    
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({ error: 'failed to find user info' });
-        }
+        const response = await fetch(`${api_url}/me`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${tokens!.access_token}`
+            } 
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(`could not fetch user info, status ${response.status}, ${data.error.message}`);
+        addSpotifyUser.run( // TODO: error checking
+            req.session.user_id!,
+            data.account_id,
+            data.display_name,
+            data.external_urls.spotify,
+            data.href,
+            data.image_url, // TODO: incorrect way to access the image_url
+            data.uri
+        );
+        res.json(data);
     }
 });
 
 /**
  * POST body contains an Apple Music playlist link
+ * TODO: error checking?
  */
 spotify_api_routes.post('/convert-apple', async (req, res) => {
     /**
@@ -74,27 +69,22 @@ spotify_api_routes.post('/convert-apple', async (req, res) => {
      * 8. Log playlist in DB
      * 9. Return success or failure (missing tracks, etc)
      */
-    try {
-        await refresh_spotify_access_token(req.session.user_id!); // TODO: too many refreshes
-        const { link: apple_link } = req.body as { link: string }; // unpacks body and renames link to apple_link
-        const apple_data = await scrape_apple_playlist(apple_link);
-        const spotify_playlist_data = await create_spotify_playlist(req.session.user_id!, {
-            name: apple_data.name,
-            description: null, // TODO: find description
-            public: false
-        });
+    await refresh_spotify_access_token(req.session.user_id!); // TODO: too many refreshes
+    const { link: apple_link } = req.body as { link: string }; // unpacks body and renames link to apple_link
+    const apple_data = await scrape_apple_playlist(apple_link);
+    const spotify_playlist_data = await create_spotify_playlist(req.session.user_id!, {
+        name: apple_data.name,
+        description: null, // TODO: find description
+        public: false
+    });
 
-        // TODO: batch requests to avoid rate limiting
-        const search_results = await Promise.all(
-            apple_data.tracks.map(track => search_spotify_track(req.session.user_id!, track.name, track.artist))
-        );
+    // TODO: batch requests to avoid rate limiting
+    const search_results = await Promise.all(
+        apple_data.tracks.map(track => search_spotify_track(req.session.user_id!, track.name, track.artist))
+    );
 
-        await add_spotify_tracks(req.session.user_id!, spotify_playlist_data.id, search_results.filter(uri => uri !== null));
-        res.json({ success: true });
-    } catch(err) {
-        res.status(500).json({ error: 'failed' });
-    }
-
+    await add_spotify_tracks(req.session.user_id!, spotify_playlist_data.id, search_results.filter(uri => uri !== null));
+    res.json({ success: true });
 });
 
 export default spotify_api_routes;

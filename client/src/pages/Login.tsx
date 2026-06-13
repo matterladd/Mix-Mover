@@ -12,19 +12,19 @@ export default function Login() {
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault(); // stops the default form submit behavior (sending http)
 
-        try {
-            const res = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include', // tells browser to send/receive cookies
-                body: JSON.stringify({ email, password })
-            });
-            if (!res.ok) throw new Error(`login failed, status: ${res.status}`);
+        const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include', // tells browser to send/receive cookies
+            body: JSON.stringify({ email, password })
+        });
+        if (!res.ok) {
+            const data = await res.json();
+            console.error(data.error);
+            setIsLoggedIn(false);
+        } else {
             setUser({id: null, email: email});
             navigate('/');
-        } catch (err) {
-            console.error(err);
-            setIsLoggedIn(false);
         }
     }
 

@@ -11,17 +11,15 @@ export default function Dashboard() {
 
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
-        try {
-            const response = await fetch('/api/spotify/convert-apple', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ link: appleLink })
-            });
-            const data = await response.json();
-            if (!response.ok) throw new Error(`unsuccessful conversion, status ${response.status}, ${data.error}`);
+        const response = await fetch('/api/spotify/convert-apple', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ link: appleLink })
+        });
 
-        } catch (err) {
-            console.error(err);
+        if (!response.ok){
+            const data = await response.json();
+            console.error(`unsuccessful conversion, status ${response.status}, ${data.error}`);
         }
     }
 
