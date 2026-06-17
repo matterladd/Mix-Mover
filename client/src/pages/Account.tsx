@@ -26,15 +26,13 @@ export default function Account() {
     return (
         <>
             <h3>Account</h3>
-            <h4>Accounts</h4>
+            <p>{user!.email}</p><button onClick={handleLogout}>Logout</button>
+            <h4>Connected Accounts</h4>
             <ul>
                 <li>Spotify Account: <button onClick={createPlaylist}>create playlist</button></li>
                 <li>Apple Music Account: </li>
             </ul>
             <h4>Settings</h4>
-            <h4>Login/Logout</h4>
-            <button onClick={handleLogout}>Logout</button>
-
         </>
     );
 }
