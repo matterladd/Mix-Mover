@@ -1,4 +1,4 @@
-import { useAuthContext } from "../context/AuthContext";
+import { useAuthContext } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Account() {
