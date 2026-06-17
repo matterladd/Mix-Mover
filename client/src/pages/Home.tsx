@@ -1,5 +1,6 @@
 import { useAuthContext } from "../context/AuthContext";
 import { useState } from "react";
+import { Button } from "@/components/ui/button"
 
 export default function Home() {
     const { user } = useAuthContext();
@@ -30,6 +31,7 @@ export default function Home() {
                 <label>Apple Music playlist link: </label>
                 <input value={appleLink} onChange={(e) => setAppleLink(e.target.value)} />
                 <button type="submit">convert</button> {/* type is not necessary here but added for clarity */}
+                <Button>shadcn</Button>
             </form>
         </>
     );
