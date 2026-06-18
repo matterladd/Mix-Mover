@@ -11,7 +11,6 @@ function App() {
   return (
     <>
       <NavBar />
-      <h1>Playlist Converter</h1>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/account" element={<Account />} />
