@@ -1,41 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/context/AuthContext";
+import { SignupForm } from "@/components/signup-form";
 
 export default function Signup() {
-    const navigate = useNavigate();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState(""); // TODO: probably unsafe storing this as a state?
-    const { setUser } = useAuthContext();
-
-    const handleSubmit = async (e: React.SubmitEvent) => {
-        e.preventDefault(); // stops the default form submit behavior (sending http)
-
-        try {
-            const res = await fetch('/api/auth/signup', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include', // tells browser to send/receive cookies
-                body: JSON.stringify({ email, password })
-            });
-            if (!res.ok) throw new Error(`signup failed, status: ${res.status}`);
-            setUser({id: null, email: email});
-            navigate('/');
-        } catch (err) {
-            console.error(err);
-        }
-    }
-
     return (
         <>
-            <h3>Sign up</h3>
-            <form onSubmit={handleSubmit}>
-                <label>new user email: </label>
-                <input value={email} onChange={(e) => setEmail(e.target.value)} />
-                <label>new user password: </label>
-                <input value={password} onChange={(e) => setPassword(e.target.value)} />
-                <button type="submit">Sign up</button> {/* type is not necessary here but added for clarity */}
-            </form>
+            <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+                <div className="w-full max-w-md">
+                    <SignupForm />
+                </div>
+            </div>
         </>
     );
 }
