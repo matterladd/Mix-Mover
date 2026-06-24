@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input";
 import { Field, FieldLabel } from "@/components/ui/field";
+import { Card } from "@/components/ui/card";
 
 export default function Home() {
     const { user } = useAuthContext();
@@ -24,8 +25,7 @@ export default function Home() {
 
     return (
         <>
-            <div >
-            <form className="flex" onSubmit={handleSubmit}>
+            <form className="flex p-4" onSubmit={handleSubmit}>
                 <Field className="w-fit" orientation="horizontal">
                     <FieldLabel className="" htmlFor="appleLink">Apple Music Playlist link:</FieldLabel>
                     <Input 
@@ -35,10 +35,9 @@ export default function Home() {
                         onChange={(e) => setAppleLink(e.target.value)} 
                         required
                     />
+                    <Button className="" type="submit">convert</Button>
                 </Field>
-                <Button type="submit">convert</Button>
             </form>
-            </div>
         </>
     );
 }
