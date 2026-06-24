@@ -1,6 +1,8 @@
 import { useAuthContext } from "@/context/AuthContext";
 import { useState } from "react";
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input";
+import { Field, FieldLabel } from "@/components/ui/field";
 
 export default function Home() {
     const { user } = useAuthContext();
@@ -22,17 +24,21 @@ export default function Home() {
 
     return (
         <>
-            <h3>Home</h3>
-            <p>Welcome, {user?.email || 'random guy'}!</p>
-                        
-                        
-            <h4>Convert</h4>
-            <form onSubmit={handleSubmit}>
-                <label>Apple Music playlist link: </label>
-                <input value={appleLink} onChange={(e) => setAppleLink(e.target.value)} />
-                <button type="submit">convert</button> {/* type is not necessary here but added for clarity */}
-                <Button>shadcn</Button>
+            <div >
+            <form className="flex" onSubmit={handleSubmit}>
+                <Field className="w-fit" orientation="horizontal">
+                    <FieldLabel className="" htmlFor="appleLink">Apple Music Playlist link:</FieldLabel>
+                    <Input 
+                        id="appleLink" 
+                        className="w-xl"
+                        value={appleLink} 
+                        onChange={(e) => setAppleLink(e.target.value)} 
+                        required
+                    />
+                </Field>
+                <Button type="submit">convert</Button>
             </form>
+            </div>
         </>
     );
 }
