@@ -25,7 +25,7 @@ export function LoginForm({
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState(""); // TODO: probably unsafe storing this as a state?
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // set for first time display
+  // const [isLoggedIn, setIsLoggedIn] = (true); // set for first time display
   const { setUser } = useAuthContext();
 
   // declared inside LoginForm component because it needs access to component state
@@ -41,7 +41,7 @@ export function LoginForm({
     if (!res.ok) {
         const data = await res.json();
         console.error(data.error);
-        setIsLoggedIn(false);
+        // setIsLoggedIn(false);
     } else {
         setUser({id: null, email: email});
         navigate('/');

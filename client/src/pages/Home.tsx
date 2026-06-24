@@ -1,11 +1,9 @@
-import { useAuthContext } from "@/context/AuthContext";
 import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input";
 import { Field, FieldLabel } from "@/components/ui/field";
 
 export default function Home() {
-    const { user } = useAuthContext();
     const [appleLink, setAppleLink] = useState("");
 
     const handleSubmit = async (e: React.SubmitEvent) => {
@@ -22,21 +20,21 @@ export default function Home() {
         }
     }
 
-    return (
-        <>
-            <form className="flex p-4 justify-center" onSubmit={handleSubmit}>
-                <Field className="w-fit" orientation="horizontal">
-                    <FieldLabel className="" htmlFor="appleLink">Apple Music Playlist link:</FieldLabel>
-                    <Input 
-                        id="appleLink" 
-                        className="w-xl"
-                        value={appleLink} 
-                        onChange={(e) => setAppleLink(e.target.value)} 
-                        required
-                    />
-                    <Button type="submit">convert</Button>
-                </Field>
-            </form>
-        </>
-    );
+return (
+  <>
+    <form className="flex p-4 justify-center" onSubmit={handleSubmit}>
+      <Field className="w-fit" orientation="horizontal">
+        <FieldLabel className="" htmlFor="appleLink">Apple Music Playlist link:</FieldLabel>
+        <Input 
+        id="appleLink" 
+        className="w-xl"
+        value={appleLink} 
+        onChange={(e) => setAppleLink(e.target.value)} 
+        required
+        />
+        <Button type="submit">convert</Button>
+      </Field>
+    </form>
+</>
+);
 }
