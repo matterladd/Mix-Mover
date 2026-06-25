@@ -31,6 +31,7 @@ app_auth_routes.post('/logout', (req, res) => {
             res.status(500).json({error: 'logout failed'});
             return;
         }
+        res.clearCookie('connect.sid'); // default session cookie name
         res.json({ success: true });
     });
 });
