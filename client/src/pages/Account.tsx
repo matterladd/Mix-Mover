@@ -1,10 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { useAuthContext } from "@/context/AuthContext";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Account() {
     const { user, setUser } = useAuthContext();
     const navigate = useNavigate();
+
+    useEffect(() => {
+
+    });
 
     function createPlaylist() {
         alert('feature removed');
@@ -44,12 +49,12 @@ export default function Account() {
             <h3 className="text-2xl font-semibold pb-4">
               {user!.email}
             </h3>
-            <Button className="max-w-fit" variant="destructive" onClick={handleLogout}>Logout</Button>
-            <Button className="max-w-fit" variant="destructive" onClick={() => alert('not implemented')}>Delete Account</Button>
-            <ul>
-              <li>Spotify Account: <Button onClick={createPlaylist}>create playlist</Button></li>
-              <li>Apple Music Account: </li>
-            </ul>
+            <div className="flex pb-4">
+              <Button className="max-w-fit" variant="destructive" onClick={handleLogout}>Logout</Button>
+              <Button className="max-w-fit" variant="destructive" onClick={() => alert('not implemented')}>Delete Account</Button>
+            </div>
+            <div className="pb-2">Spotify Account: <Button onClick={createPlaylist}>create playlist</Button></div>
+            <div>Apple Music Account: </div>
           </div>
         </div>
       );
