@@ -40,7 +40,7 @@ return (
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuLink 
-            render={<Link to="/Account"></Link>}
+            render={<Link to="/account"></Link>}
             className={navigationMenuTriggerStyle()}
           >
           Account

@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { useAuthContext } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -23,16 +24,28 @@ export default function Account() {
         }
     }
 
-    return (
-      <>
-        <h3>Account</h3>
-        <p>{user!.email}</p><button onClick={handleLogout}>Logout</button>
-        <h4>Connected Accounts</h4>
-        <ul>
-          <li>Spotify Account: <button onClick={createPlaylist}>create playlist</button></li>
-          <li>Apple Music Account: </li>
-        </ul>
-        <h4>Settings</h4>
-      </>
-    );
+    function GuestView() {
+      return <p>not logged in</p>
+    }
+
+    function AccountView() {
+      return (
+         <>
+          <Button variant="destructive" onClick={handleLogout}>Logout</Button>
+          <Button variant="destructive" onClick={() => alert('not implemented')}>Delete Account</Button>
+          <ul>
+            <li>Spotify Account: <Button onClick={createPlaylist}>create playlist</Button></li>
+            <li>Apple Music Account: </li>
+          </ul>
+          <h4>Settings</h4>
+        </>
+      );
+
+    }
+    
+    /**
+     * Conditional display
+     */
+    if (!user) return <GuestView />;
+    return <AccountView />;
 }
