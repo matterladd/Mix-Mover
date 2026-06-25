@@ -54,7 +54,7 @@ export default function Account() {
               <Button className="max-w-fit" variant="destructive" onClick={() => alert('not implemented')}>Delete Account</Button>
             </div>
             <div className="pb-2">Spotify Account: <Button onClick={createPlaylist}>create playlist</Button></div>
-            <div>Apple Music Account: </div>
+            <div>Apple Music Account: <Button onClick={createPlaylist}>create playlist</Button></div>
           </div>
         </div>
       );
