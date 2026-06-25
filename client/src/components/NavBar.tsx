@@ -46,12 +46,9 @@ return (
             Account
           </NavigationMenuLink>
         </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuLink
-            className={navigationMenuTriggerStyle()}
-          >
-            <ThemeToggle />
-          </NavigationMenuLink>
+        {/* // TODO whole surface of button not clickable */}
+        <NavigationMenuItem className={navigationMenuTriggerStyle()}>
+          <ThemeToggle />
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
