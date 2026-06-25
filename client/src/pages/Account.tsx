@@ -25,13 +25,25 @@ export default function Account() {
     }
 
     function GuestView() {
-      return <p>not logged in</p>
+      return (
+        <div className="flex w-full justify-center">
+          <div className="flex flex-col w-full max-w-md items-center">
+            <p className="font-extrabold text-4xl">not logged in</p>
+          </div>
+        </div>
+      );
     }
 
     function AccountView() {
       return (
         <div className="flex w-full justify-center">
           <div className="flex flex-col w-full max-w-md items-center">
+            <h1 className="text-5xl font-bold pb-4">
+              Account
+            </h1>
+            <h3 className="text-2xl font-semibold pb-4">
+              {user!.email}
+            </h3>
             <Button className="max-w-fit" variant="destructive" onClick={handleLogout}>Logout</Button>
             <Button className="max-w-fit" variant="destructive" onClick={() => alert('not implemented')}>Delete Account</Button>
             <ul>
