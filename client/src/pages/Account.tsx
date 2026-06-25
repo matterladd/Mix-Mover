@@ -30,14 +30,16 @@ export default function Account() {
 
     function AccountView() {
       return (
-         <>
-          <Button variant="destructive" onClick={handleLogout}>Logout</Button>
-          <Button variant="destructive" onClick={() => alert('not implemented')}>Delete Account</Button>
-          <ul>
-            <li>Spotify Account: <Button onClick={createPlaylist}>create playlist</Button></li>
-            <li>Apple Music Account: </li>
-          </ul>
-        </>
+        <div className="flex w-full justify-center">
+          <div className="flex flex-col w-full max-w-md items-center">
+            <Button className="max-w-fit" variant="destructive" onClick={handleLogout}>Logout</Button>
+            <Button className="max-w-fit" variant="destructive" onClick={() => alert('not implemented')}>Delete Account</Button>
+            <ul>
+              <li>Spotify Account: <Button onClick={createPlaylist}>create playlist</Button></li>
+              <li>Apple Music Account: </li>
+            </ul>
+          </div>
+        </div>
       );
 
     }
