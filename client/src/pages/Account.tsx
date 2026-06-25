@@ -37,7 +37,6 @@ export default function Account() {
             <li>Spotify Account: <Button onClick={createPlaylist}>create playlist</Button></li>
             <li>Apple Music Account: </li>
           </ul>
-          <h4>Settings</h4>
         </>
       );
 

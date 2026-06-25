@@ -10,9 +10,9 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType>({
     user: null,
-    setUser: () => {},
+    setUser: () => null,
     loading: true,
-    setLoading: () => {}
+    setLoading: () => null
 }); 
 
 export function AuthProvider({ children }: { children: React.ReactNode}) {

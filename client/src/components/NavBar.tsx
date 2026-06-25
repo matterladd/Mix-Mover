@@ -6,7 +6,7 @@ import {
     NavigationMenuLink,
     navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu';
-
+import ThemeToggle from '@/components/theme-toggle';
 
 export default function NavBar() {
 
@@ -35,16 +35,23 @@ return (
             render={<Link to="/signup"></Link>}
             className={navigationMenuTriggerStyle()}
           >
-          Sign up
-        </NavigationMenuLink>
+            Sign up
+          </NavigationMenuLink>
         </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuLink 
             render={<Link to="/account"></Link>}
             className={navigationMenuTriggerStyle()}
           >
-          Account
-        </NavigationMenuLink>
+            Account
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink
+            className={navigationMenuTriggerStyle()}
+          >
+            <ThemeToggle />
+          </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
