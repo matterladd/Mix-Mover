@@ -56,7 +56,7 @@ spotify_api_routes.get('/me', async (req, res) => {
  * POST body contains an Apple Music playlist link
  * TODO: error checking?
  */
-spotify_api_routes.post('/convert-apple', async (req, res) => {
+spotify_api_routes.post('/convert-apple', async (req, res, next) => {
     /**
      * Steps:
      * 1. Check if user has session

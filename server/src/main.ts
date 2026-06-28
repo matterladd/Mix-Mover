@@ -1,6 +1,6 @@
 import './db/schema.ts' // runs once to initialize db
 import db from './db/client.ts'
-import express from 'express';
+import express, { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 import session from 'express-session';
 import SqliteStore from 'better-sqlite3-session-store';
 import path from 'node:path'
@@ -48,9 +48,9 @@ app.get(/.*/, (req, res) => { // catch-all
 });
 
 // * Custom Error handler
-// app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-
-// });
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    res.status(500).json({ message: err.message });
+});
 
 const server = app.listen(port, '127.0.0.1', () => {
     console.log(`App listening on port ${port}`);

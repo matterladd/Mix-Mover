@@ -2,12 +2,15 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input";
 import { Field, FieldLabel } from "@/components/ui/field";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function Home() {
     const [appleLink, setAppleLink] = useState("");
+    const [isLoading, setisLoading] = useState(false);
 
     const handleSubmit = async (e: React.SubmitEvent) => {
         e.preventDefault();
+        setisLoading(true);
         const response = await fetch('/api/spotify/convert-apple', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -15,9 +18,10 @@ export default function Home() {
         });
 
         if (!response.ok){
-            const data = await response.json();
-            console.error(`unsuccessful conversion, status ${response.status}, ${data.error}`);
+          const data = await response.json();
+          console.error(`unsuccessful conversion, status ${response.status}, ${data.message}`);
         }
+        setisLoading(false);
     }
 
 return (
@@ -35,7 +39,10 @@ return (
         onChange={(e) => setAppleLink(e.target.value)} 
         required
         />
-        <Button type="submit">convert</Button>
+        <Button type="submit" disabled={isLoading}>
+          convert
+          {isLoading && <Spinner data-icon="inline-start" />}
+        </Button>
       </Field>
     </form>
 </>
