@@ -1,6 +1,6 @@
 import './db/schema.ts' // runs once to initialize db
 import db from './db/client.ts'
-import express, { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import session from 'express-session';
 import SqliteStore from 'better-sqlite3-session-store';
 import path from 'node:path'
