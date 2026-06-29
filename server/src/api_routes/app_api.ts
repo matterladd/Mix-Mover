@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 import 'express-session'; // include for types
-import { getUserByEmail, getUserById, addUser } from '../db/queries.ts';
+import { getUserById } from '../db/queries.ts';
 
 const app_api_routes = Router();
 

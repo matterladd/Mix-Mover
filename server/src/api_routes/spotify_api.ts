@@ -46,7 +46,7 @@ spotify_api_routes.get('/me', async (req, res, next) => {
                 data.display_name,
                 data.external_urls.spotify,
                 data.href,
-                data.image_url, // TODO: incorrect way to access the image_url
+                data.images[0].url,
                 data.uri
             );
             res.json(data);

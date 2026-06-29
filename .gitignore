@@ -13,7 +13,7 @@ dist-ssr
 *.local
 .env
 *.db*
-test.js
+test.ts
 
 # Editor directories and files
 .vscode/*

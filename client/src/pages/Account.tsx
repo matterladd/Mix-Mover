@@ -1,17 +1,48 @@
 import { Button } from "@/components/ui/button";
 import { useAuthContext } from "@/context/AuthContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from "@/components/ui/item";
+
+interface SpotifyUser {
+  display_name: string,
+  external_url: string,
+  image_url: string
+}
 
 export default function Account() {
     const { user, setUser } = useAuthContext();
+    const [spotifyAccount, setSpotifyAccount] = useState<SpotifyUser | null>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
+      if (user) {
+        try {
+          fetch('/api/spotify/me', {
+            method: 'GET',
+            credentials: 'include'
+          })
+          .then(res => res.ok ? res.json() : null)
+          .then((data: SpotifyUser) => {
+            if (data) {
+              setSpotifyAccount({
+                display_name: data.display_name,
+                external_url: data.external_url,
+                image_url: data.image_url
+              });
+            }
+          })
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    }, [user]);
 
-    });
+    function connectSpotifyAccount() {
+      window.location.assign('/api/spotify_auth');
+    }
 
-    function createPlaylist() {
+    function connectAppleMusicAccount() {
         alert('feature removed');
     }
         
@@ -23,6 +54,7 @@ export default function Account() {
             });
             if (!res.ok) throw new Error('logout failed, status ' + res.status);
             setUser(null);
+            setSpotifyAccount(null);
             navigate('/');
         } catch (err) {
             console.error(err);
@@ -53,12 +85,46 @@ export default function Account() {
               <Button className="max-w-fit" variant="destructive" onClick={handleLogout}>Logout</Button>
               <Button className="max-w-fit" variant="destructive" onClick={() => alert('not implemented')}>Delete Account</Button>
             </div>
-            <div className="pb-2">Spotify Account: <Button onClick={createPlaylist}>create playlist</Button></div>
-            <div>Apple Music Account: <Button onClick={createPlaylist}>create playlist</Button></div>
+            <div className="pb-2">
+              <ItemGroup>
+                <Item variant="outline">
+                  {spotifyAccount && 
+                    <ItemMedia variant="image">
+                      <a href={spotifyAccount?.external_url}>
+                        <img
+                          src={spotifyAccount?.image_url}
+                          alt='Profile'
+                          width={32}
+                          height={32}
+                          className="object-cover"
+                        />
+                      </a>
+                    </ItemMedia>
+                  }
+                  <ItemContent>
+                    <ItemTitle>Spotify Account</ItemTitle>
+                    <ItemDescription>
+                      <a target="_blank" href={spotifyAccount?.external_url}>{spotifyAccount?.display_name}</a>
+                    </ItemDescription>
+                  </ItemContent>
+                  <ItemActions>
+                    {!spotifyAccount && <Button onClick={connectSpotifyAccount}>connect account</Button>}
+                  </ItemActions>
+                </Item>
+                <Item variant="outline">
+                  <ItemContent>
+                    <ItemTitle>Apple Music Account</ItemTitle>
+                    <ItemDescription>None</ItemDescription>
+                  </ItemContent>
+                  <ItemActions>
+                    <Button onClick={connectAppleMusicAccount}>connect account</Button>
+                  </ItemActions>
+                </Item>
+              </ItemGroup>
+            </div>
           </div>
         </div>
       );
-
     }
     
     /**

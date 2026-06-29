@@ -55,7 +55,7 @@ spotify_auth_routes.get('/callback', async (req, res) => {
         expires_at: data.expires_in // TODO: inacurrate (at != in)
     }
     addTokensForUser(token_obj);
-    res.redirect('http://127.0.0.1:5173/');
+    res.redirect('http://127.0.0.1:5173/account');
 });
 
 export default spotify_auth_routes;
