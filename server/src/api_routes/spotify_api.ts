@@ -18,37 +18,42 @@ spotify_api_routes.use(express.json());
 /**
  * Retrieve data about the user
  */
-spotify_api_routes.get('/me', async (req, res) => {
-    const spotify_user: SpotifyUser | undefined = getSpotifyUser.get(req.session.user_id!);
-
-    // use database data first if it exists
-    if (spotify_user) {
-
-        res.json(spotify_user);
-
-    } else {
-        await refresh_spotify_access_token(req.session.user_id!); // TODO: May not need to refresh every time
-        const tokens = getSpotifyTokens.get(req.session.user_id!);
-        // TODO: if token expired...
-        // TODO: if token does not exist (returns undefined)...
-        const response = await fetch(`${api_url}/me`, {
-            method: 'GET',
-            headers: {
-                Authorization: `Bearer ${tokens!.access_token}`
-            } 
-        });
-        const data = await response.json();
-        if (!response.ok) throw new Error(`could not fetch user info, status ${response.status}, ${data.error.message}`);
-        addSpotifyUser.run( // TODO: error checking
-            req.session.user_id!,
-            data.account_id,
-            data.display_name,
-            data.external_urls.spotify,
-            data.href,
-            data.image_url, // TODO: incorrect way to access the image_url
-            data.uri
-        );
-        res.json(data);
+spotify_api_routes.get('/me', async (req, res, next) => {
+    try {
+        const spotify_user: SpotifyUser | undefined = getSpotifyUser.get(req.session.user_id!);
+    
+        // use database data first if it exists
+        if (spotify_user) {
+    
+            res.json(spotify_user);
+    
+        } else {
+            await refresh_spotify_access_token(req.session.user_id!); // TODO: May not need to refresh every time
+            const tokens = getSpotifyTokens.get(req.session.user_id!);
+            // TODO: if token expired...
+            // TODO: if token does not exist (returns undefined)...
+            const response = await fetch(`${api_url}/me`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${tokens!.access_token}`
+                } 
+            });
+            const data = await response.json();
+            if (!response.ok) throw new Error(`could not fetch user info, status ${response.status}, ${data.error.message}`);
+            addSpotifyUser.run( // TODO: error checking
+                req.session.user_id!,
+                data.account_id,
+                data.display_name,
+                data.external_urls.spotify,
+                data.href,
+                data.image_url, // TODO: incorrect way to access the image_url
+                data.uri
+            );
+            res.json(data);
+        }
+    } catch (err) {
+        console.error(err);
+        next(new Error(`Could not fetch user info`));
     }
 });
 
@@ -69,22 +74,27 @@ spotify_api_routes.post('/convert-apple', async (req, res, next) => {
      * 8. Log playlist in DB
      * 9. Return success or failure (missing tracks, etc)
      */
-    await refresh_spotify_access_token(req.session.user_id!); // TODO: too many refreshes
-    const { link: apple_link } = req.body as { link: string }; // unpacks body and renames link to apple_link
-    const apple_data = await scrape_apple_playlist(apple_link);
-    const spotify_playlist_data = await create_spotify_playlist(req.session.user_id!, {
-        name: apple_data.name,
-        description: null, // TODO: find description
-        public: false
-    });
-
-    // TODO: batch requests to avoid rate limiting
-    const search_results = await Promise.all(
-        apple_data.tracks.map(track => search_spotify_track(req.session.user_id!, track.name, track.artist))
-    );
-
-    await add_spotify_tracks(req.session.user_id!, spotify_playlist_data.id, search_results.filter(uri => uri !== null));
-    res.json({ success: true });
+    try {
+        await refresh_spotify_access_token(req.session.user_id!); // TODO: too many refreshes
+        const { link: apple_link } = req.body as { link: string }; // unpacks body and renames link to apple_link
+        const apple_data = await scrape_apple_playlist(apple_link);
+        const spotify_playlist_data = await create_spotify_playlist(req.session.user_id!, {
+            name: apple_data.name,
+            description: null, // TODO: find description
+            public: false
+        });
+    
+        // TODO: batch requests to avoid rate limiting
+        const search_results = await Promise.all(
+            apple_data.tracks.map(track => search_spotify_track(req.session.user_id!, track.name, track.artist))
+        );
+    
+        await add_spotify_tracks(req.session.user_id!, spotify_playlist_data.id, search_results.filter(uri => uri !== null));
+        res.json({ success: true });
+    } catch (err) {
+        console.error(err);
+        next(new Error(`Conversion failed`));
+    }
 });
 
 export default spotify_api_routes;
