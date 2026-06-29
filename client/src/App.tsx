@@ -6,6 +6,7 @@ import Account from './pages/Account';
 import NavBar from './components/NavBar';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import { Toaster } from "./components/ui/sonner";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path='/signup' element={<Signup />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Toaster />
     </>
   );
 }

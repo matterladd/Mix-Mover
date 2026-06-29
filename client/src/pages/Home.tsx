@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Spinner } from "@/components/ui/spinner";
+import { toast } from "sonner";
 
 export default function Home() {
     const [appleLink, setAppleLink] = useState("");
@@ -20,6 +21,21 @@ export default function Home() {
         if (!response.ok){
           const data = await response.json();
           console.error(`unsuccessful conversion, status ${response.status}, ${data.message}`);
+          toast.error('Unsuccessful', {
+            position: "top-right",
+            action: {
+              label: 'x',
+              onClick: () => {}
+            }
+          });
+        } else {
+          toast.success('Success!', {
+              position: "top-right",
+              action: {
+                label: 'x',
+                onClick: () => {}
+              }
+            });
         }
         setisLoading(false);
     }
