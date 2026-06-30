@@ -18,7 +18,7 @@ app_auth_routes.post('/login', async (req, res) => { // TODO: are async function
             return;
         }
         req.session.user_id = user.id;
-        res.status(200).json({ success: true });
+        res.status(200).json({ id: user.id, email: email });
         return;
     }
     res.status(401).json({ error: 'Invalid credentials' });

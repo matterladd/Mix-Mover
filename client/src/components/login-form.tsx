@@ -2,10 +2,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
   Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+  CardContent
 } from "@/components/ui/card"
 import {
   Field,
@@ -17,6 +14,7 @@ import { Input } from "@/components/ui/input"
 import { useAuthContext } from "@/context/AuthContext";
 import { useState } from "react"
 import { Link, useNavigate } from 'react-router-dom'
+import { useSpotifyContext } from "@/context/SpotifyContext"
 
 export function LoginForm({
   className,
@@ -27,6 +25,7 @@ export function LoginForm({
   const [password, setPassword] = useState(""); // TODO: probably unsafe storing this as a state?
   // const [isLoggedIn, setIsLoggedIn] = (true); // set for first time display
   const { setUser } = useAuthContext();
+  const { updateSpotifyUser } = useSpotifyContext();
 
   // declared inside LoginForm component because it needs access to component state
   async function handleSubmit(e: React.SubmitEvent) {
@@ -38,12 +37,13 @@ export function LoginForm({
         credentials: 'include', // tells browser to send/receive cookies
         body: JSON.stringify({ email, password })
     });
+    const data = await res.json();
     if (!res.ok) {
-        const data = await res.json();
         console.error(data.error);
         // setIsLoggedIn(false);
     } else {
-        setUser({id: null, email: email});
+        setUser({id: data.id, email: data.email});
+        updateSpotifyUser();
         navigate('/');
     }
   }

@@ -1,42 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { useAuthContext } from "@/context/AuthContext";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from "@/components/ui/item";
-
-interface SpotifyUser {
-  display_name: string,
-  external_url: string,
-  image_url: string
-}
+import { useSpotifyContext } from "@/context/SpotifyContext";
+import { useEffect } from "react";
 
 export default function Account() {
     const { user, setUser } = useAuthContext();
-    const [spotifyAccount, setSpotifyAccount] = useState<SpotifyUser | null>(null);
+    const { spotifyUser, setSpotifyUser, updateSpotifyUser } = useSpotifyContext();
     const navigate = useNavigate();
 
     useEffect(() => {
-      if (user) {
-        try {
-          fetch('/api/spotify/me', {
-            method: 'GET',
-            credentials: 'include'
-          })
-          .then(res => res.ok ? res.json() : null)
-          .then((data: SpotifyUser) => {
-            if (data) {
-              setSpotifyAccount({
-                display_name: data.display_name,
-                external_url: data.external_url,
-                image_url: data.image_url
-              });
-            }
-          })
-        } catch (err) {
-          console.error(err);
-        }
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('spotify_connected') === 'true') {
+        console.log('poop')
+        updateSpotifyUser();
       }
-    }, [user]);
+    }, []);
 
     function connectSpotifyAccount() {
       window.location.assign('/api/spotify_auth');
@@ -54,7 +34,7 @@ export default function Account() {
             });
             if (!res.ok) throw new Error('logout failed, status ' + res.status);
             setUser(null);
-            setSpotifyAccount(null);
+            setSpotifyUser(null);
             navigate('/');
         } catch (err) {
             console.error(err);
@@ -88,11 +68,11 @@ export default function Account() {
             <div className="pb-2">
               <ItemGroup>
                 <Item variant="outline">
-                  {spotifyAccount && 
+                  {spotifyUser && 
                     <ItemMedia variant="image">
-                      <a href={spotifyAccount?.external_url}>
+                      <a href={spotifyUser?.external_url}>
                         <img
-                          src={spotifyAccount?.image_url}
+                          src={spotifyUser?.image_url}
                           alt='Profile'
                           width={32}
                           height={32}
@@ -104,11 +84,11 @@ export default function Account() {
                   <ItemContent>
                     <ItemTitle>Spotify Account</ItemTitle>
                     <ItemDescription>
-                      <a target="_blank" href={spotifyAccount?.external_url}>{spotifyAccount?.display_name}</a>
+                      <a target="_blank" href={spotifyUser?.external_url}>{spotifyUser?.display_name}</a>
                     </ItemDescription>
                   </ItemContent>
                   <ItemActions>
-                    {!spotifyAccount && <Button onClick={connectSpotifyAccount}>connect account</Button>}
+                    {!spotifyUser && <Button onClick={connectSpotifyAccount}>connect account</Button>}
                   </ItemActions>
                 </Item>
                 <Item variant="outline">
