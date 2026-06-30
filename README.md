@@ -1,19 +1,30 @@
-# Playlist Converter
+# Mix Mover
 ### For when your friend keeps sending you those dang Apple Music links
+**Mix Mover** is a web app that converts a music playlist from one service to another. I built this project to showcase my full-stack development skills as well as personal use and the use of anyone looking for such a tool.
 
-This project is organized into three `npm` domains: the **Client**, **Server**, and **overall/top-level**. Running top-level runs the whole application, while running only the client or server will run that part of the stack.
+### Installation
+This project is organized into three `npm` project domains: the *client*, *server*, and the *overall/top-level*. Running top-level runs the whole application, while running only the client or server will run that part of the stack. To install:
+1. Clone this repository
+2. Be sure you have `Node.js` and `npm` installed
+3. Run `npm install` in the root of the project, `/client`, and `/server` to install all three `npm` proejct domains
+4. Run the full app with `npm run dev` at project root, or to run only frontend or backend, `npm run dev` at `/client` and `/server` respectively
 
-List of `npm` dependencies and their purpose:
+
+### List of `npm` dependencies and their purpose:
 #### Client
-- `react`
-- `typescript`
-- `vite`
+- `react` -> Frontend library
+- `react-router-dom` -> Provides client-side routing, which allows this project to be a [single page application](https://en.wikipedia.org/wiki/Single-page_application)
+- `vite` -> Frontend development server
+- `tailwindcss` -> Custom CSS class library
+- `shadcn` -> Pre-styled React components using the [BaseUI](https://base-ui.com/) library
 
 #### Server
-- `express` -> Web routing framework
+- `express` -> Backend API routing framework
 - `express-session` -> Express middleware extension to store active session information
-- `better-sqlite3` -> Stores user data across different sessions
-- `tsx` -> used to execute TypeScript code directly (not related to a`.tsx` file)
+- `better-sqlite3` -> Node integration with a SQLite database
+- `better-sqlite3-session-store` -> Stores user data across different sessions by integrating with `express-session`
+- `bcrypt` -> Hashing algorithm used to securely store passwords
+- `playwright` -> Headless browser library that is used for web scraping certain sites for playlist data
 - `nodemon` -> development tool for hot-reloading the backend server
 
 #### Project
