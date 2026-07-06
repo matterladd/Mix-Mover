@@ -23,7 +23,7 @@ export default function Account() {
     }
 
     function connectAppleMusicAccount() {
-        alert('feature removed');
+        alert('Feature not implemented, in progress');
     }
         
     async function handleLogout() {

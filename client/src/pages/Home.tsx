@@ -43,7 +43,7 @@ export default function Home() {
 return (
   <>
     <h1 className="flex justify-center text-6xl font-bold tracking-tight">
-      Playlist Converter
+      MixMover
     </h1>
     <form className="flex p-8 justify-center" onSubmit={handleSubmit}>
       <Field className="w-fit" orientation="horizontal">
