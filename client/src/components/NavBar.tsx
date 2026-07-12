@@ -27,44 +27,43 @@ const navLinks: {label: string, to:string }[] = [
 ];
 
 export default function NavBar() {
-
-return (
-  <>
-    {/* breakpoint for desktop resolutions */}
-    <NavigationMenu className={"hidden sm:flex"}>
-      <NavigationMenuList>
-        {navLinks.map((link) => (
-          <NavigationMenuItem>
-            <NavigationMenuLink
-              render={<Link to={link.to}></Link>}
-              className={navigationMenuTriggerStyle()} 
-            >
-              {link.label}
-            </NavigationMenuLink>
+  return (
+    <>
+      {/* breakpoint for desktop resolutions */}
+      <NavigationMenu className={"hidden sm:flex"}>
+        <NavigationMenuList>
+          {navLinks.map((link) => (
+            <NavigationMenuItem>
+              <NavigationMenuLink
+                render={<Link to={link.to}></Link>}
+                className={navigationMenuTriggerStyle()} 
+              >
+                {link.label}
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          ))}
+          {/* // TODO whole surface of button not clickable */}
+          <NavigationMenuItem className={navigationMenuTriggerStyle()}>
+            <ThemeToggle />
           </NavigationMenuItem>
-        ))}
-        {/* // TODO whole surface of button not clickable */}
-        <NavigationMenuItem className={navigationMenuTriggerStyle()}>
-          <ThemeToggle />
-        </NavigationMenuItem>
-      </NavigationMenuList>
-    </NavigationMenu>
+        </NavigationMenuList>
+      </NavigationMenu>
 
-    {/* breakpoint for mobile resolutions */}
-    <div className='sm:hidden'>
-      <Sheet>
-        <SheetTrigger 
-          render={<Button variant={'ghost'}>Open</Button>}
-        >
-        </SheetTrigger>
-        <SheetContent side='left' className={'w-3/4 max-w-none sm:max-w-none min-w-0'}>
-          <SheetHeader>
-            <SheetTitle>Are you absolutely sure?</SheetTitle>
-            <SheetDescription>This action cannot be undone.</SheetDescription>
-          </SheetHeader>
-        </SheetContent>
-      </Sheet>
-    </div>
-  </>
-);
+      {/* breakpoint for mobile resolutions */}
+      <div className='sm:hidden'>
+        <Sheet>
+          <SheetTrigger 
+            render={<Button variant={'ghost'}>Open</Button>}
+          >
+          </SheetTrigger>
+          <SheetContent side='left' className={'w-3/4 max-w-none sm:max-w-none min-w-0'}>
+            <SheetHeader>
+              <SheetTitle>Are you absolutely sure?</SheetTitle>
+              <SheetDescription>This action cannot be undone.</SheetDescription>
+            </SheetHeader>
+          </SheetContent>
+        </Sheet>
+      </div>
+    </>
+  );
 }
