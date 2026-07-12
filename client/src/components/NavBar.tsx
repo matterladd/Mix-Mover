@@ -8,16 +8,16 @@ import {
 } from '@/components/ui/navigation-menu';
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { Button } from './ui/button';
 import ThemeToggle from '@/components/theme-toggle';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { Hamburger } from '@hugeicons/core-free-icons';
 
 const navLinks: {label: string, to:string }[] = [
   { label: "Home", to: "/" }, 
@@ -53,14 +53,21 @@ export default function NavBar() {
       <div className='sm:hidden'>
         <Sheet>
           <SheetTrigger 
-            render={<Button variant={'ghost'}>Open</Button>}
+            render={<Button variant={'ghost'}>
+              <HugeiconsIcon icon={Hamburger}></HugeiconsIcon>
+            </Button>}
           >
           </SheetTrigger>
           <SheetContent side='left' className={'w-3/4 max-w-none sm:max-w-none min-w-0'}>
             <SheetHeader>
-              <SheetTitle>Are you absolutely sure?</SheetTitle>
-              <SheetDescription>This action cannot be undone.</SheetDescription>
+              <SheetTitle>MixMover</SheetTitle>
+              <SheetDescription></SheetDescription>
             </SheetHeader>
+            {navLinks.map((link) => (
+              <div className='p-4'>
+                <Link to={link.to}>{link.label}</Link>
+              </div>
+            ))}
           </SheetContent>
         </Sheet>
       </div>
