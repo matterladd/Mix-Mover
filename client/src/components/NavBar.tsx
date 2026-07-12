@@ -19,50 +19,38 @@ import {
 import { Button } from './ui/button';
 import ThemeToggle from '@/components/theme-toggle';
 
+const navLinks: {label: string, to:string }[] = [
+  { label: "Home", to: "/" }, 
+  { label: "Login", to: "/login" }, 
+  { label: "Sign up", to: "/signup" }, 
+  { label: "Account", to: "/account" }, 
+];
+
 export default function NavBar() {
 
 return (
   <>
+    {/* breakpoint for desktop resolutions */}
     <NavigationMenu className={"hidden sm:flex"}>
       <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuLink 
-            render={<Link to="/"></Link>}
-            className={navigationMenuTriggerStyle()}                
-          >
-            Home
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuLink 
-            render={<Link to="/login"></Link>}      
-            className={navigationMenuTriggerStyle()}
-          >
-            Login
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuLink 
-            render={<Link to="/signup"></Link>}
-            className={navigationMenuTriggerStyle()}
-          >
-            Sign up
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuLink 
-            render={<Link to="/account"></Link>}
-            className={navigationMenuTriggerStyle()}
-          >
-            Account
-          </NavigationMenuLink>
-        </NavigationMenuItem>
+        {navLinks.map((link) => (
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              render={<Link to={link.to}></Link>}
+              className={navigationMenuTriggerStyle()} 
+            >
+              {link.label}
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        ))}
         {/* // TODO whole surface of button not clickable */}
         <NavigationMenuItem className={navigationMenuTriggerStyle()}>
           <ThemeToggle />
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
+
+    {/* breakpoint for mobile resolutions */}
     <div className='sm:hidden'>
       <Sheet>
         <SheetTrigger 
