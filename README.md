@@ -9,6 +9,15 @@ This project is organized into three `npm` project domains: the *client*, *serve
 3. Run `npm install` in the root of the project, `./client`, and `./server` to install all three `npm` project domains
 4. Run the full app with `npm run dev` at project root, or to run only frontend or backend, `npm run dev` at `./client` and `./server` respectively
 
+### File Structure
+#### `./client`
+- TODO
+#### `./server`
+- `src`
+    - `api_routes`: Contains *Express* routes that are responsible for handling requests geared towards a certain API.
+    - `services`: Helper functions that may interact directly with an external API. Used in various *Express* routes.
+    - `auth_routes`: *Express* routes that handle user authentication.
+    - `db`: Contains external database connection, queries, and database setup/creation.
 
 ### List of `npm` dependencies and their purpose:
 #### Client
