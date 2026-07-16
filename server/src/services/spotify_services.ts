@@ -1,6 +1,15 @@
 import { getSpotifyTokens, addTokensForUser, addPlaylist } from "../db/queries.js";
 import { Track, SpotifyTokenRefreshObj, Token, SpotifyPlaylist } from "../types/index.js";
 
+class RateLimitError extends Error {
+  retryAfter: number;
+  constructor(retryAfter: number) {
+    super('Spotify rate limit exceeded');
+    this.retryAfter = retryAfter;
+    this.name = 'RateLimitError';
+  }
+}
+
 const accounts_url = 'https://accounts.spotify.com';
 const api_url = 'https://api.spotify.com/v1';
 
@@ -95,7 +104,12 @@ export async function search_spotify_track(
      * ISRC code: International Sound Recording Identifier
      * Spotify ID: internal spotify identifier
      */
-    if (!response.ok) throw new Error(`could not fetch track, status ${response.status}, ${data.error.message}`);
+    if (!response.ok) {
+        if (response.status === 429){
+            throw new RateLimitError(parseInt(response.headers.get('Retry-After')!));
+        }
+        throw new Error(`could not fetch track, status ${response.status}, ${data.error.message}.}`);
+    }
     const result = data.tracks?.items?.[0]; // access items[0] only if it exists
     return result?.uri ?? null; // null if track is not found, otherwise returns Spotify URI
 }

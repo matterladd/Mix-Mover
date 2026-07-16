@@ -13,8 +13,17 @@ import {
 
 // module scope to persist the same instance for each api call
 const limiter = new Bottleneck({
-    maxConcurrent: 10,
-    //reservoir: 50, 
+    maxConcurrent: 10
+});
+
+// Whatever value is returned is the waiting period for a retry
+limiter.on("failed", async (error, jobInfo) => {
+    if (error.retryAfter) {
+        const waitMs = error.retryAfter * 1000;
+        console.warn(`retrying job ${jobInfo.options.id} in ${waitMs}`);
+        return waitMs;
+    }
+    
 });
 
 const spotify_api_routes = Router();
@@ -103,8 +112,8 @@ spotify_api_routes.post('/convert-apple', async (req, res, next) => {
         await add_spotify_tracks(req.session.user_id!, spotify_playlist_data.id, search_results.filter(uri => uri !== null));
         res.json({ success: true });
     } catch (err) {
-        console.error(err);
-        next(new Error(`Conversion failed`));
+        console.error(err); // backend error message
+        next(new Error(`Conversion failed`)); // error message to forward to frontend
     }
 });
 
