@@ -25,7 +25,9 @@ This project is organized into three `npm` project domains: the *client*, *serve
 - `better-sqlite3-session-store` -> Stores user data across different sessions by integrating with `express-session`
 - `bcrypt` -> Hashing algorithm used to securely store passwords
 - `playwright` -> Headless browser library that is used for web scraping certain sites for playlist data
-- `nodemon` -> development tool for hot-reloading the backend server
+- `tsx` -> Development tool for running backend without needing to build
+- `nodemon` -> Development tool for hot-reloading the backend server
+- `Bottleneck` -> Handles API rate limiting for outside API requests
 
 #### Project
 - `concurrently` -> runs multiple commands concurrently. Used to run client and server at the same time.
