@@ -1,11 +1,12 @@
 import { firefox } from 'playwright';
 import { ApplePlaylist, Track } from '../types/index.js';
 
-export async function scrape_apple_playlist(playlist_url: string): Promise<ApplePlaylist> {
-    const browser = await firefox.launch(); // TODO: run these setups once instead of every time function runs
-    const context = await browser.newContext();
-    const page = await context.newPage();
-    
+// module scope to persist the same instance over every function call
+const browser = await firefox.launch();
+const context = await browser.newContext();
+const page = await context.newPage();
+
+export async function scrape_apple_playlist(playlist_url: string): Promise<ApplePlaylist> {    
     await page.goto(playlist_url);
     const title = await page.evaluate(() => {
         const element = document.querySelector('.headings__title'); // `.` for CSS class shorthand
@@ -23,12 +24,6 @@ export async function scrape_apple_playlist(playlist_url: string): Promise<Apple
             return row.getAttribute('aria-label'); // maps each row's aria-label to a new array
         });
     });
-
-
-    
-    await page.close();
-    await context.close();
-    await browser.close();
 
     return {
         name: title as string,

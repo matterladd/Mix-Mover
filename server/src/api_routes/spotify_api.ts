@@ -14,8 +14,7 @@ import {
 // module scope to persist the same instance for each api call
 const limiter = new Bottleneck({
     maxConcurrent: 10,
-    reservoir: 50,
-    
+    //reservoir: 50, 
 });
 
 const spotify_api_routes = Router();
@@ -86,19 +85,21 @@ spotify_api_routes.post('/convert-apple', async (req, res, next) => {
         await refresh_spotify_access_token(req.session.user_id!); // TODO: too many refreshes
         const { link: apple_link } = req.body as { link: string }; // unpacks body and renames link to apple_link
         const apple_data = await scrape_apple_playlist(apple_link);
+        
+        // batch requests to deal with rate limiting
+        const all_tracks = apple_data.tracks.map(track =>
+            limiter.schedule(() => search_spotify_track(req.session.user_id!, track.name, track.artist))
+        );
+        
+        // wait for results from all of the promises
+        const search_results = await Promise.all(all_tracks);
+        
+        // create playlist and add tracks
         const spotify_playlist_data = await create_spotify_playlist(req.session.user_id!, {
             name: apple_data.name,
             description: `via ${apple_link}`, // TODO: find description
             public: false
         });
-    
-        // batch requests to deal with rate limiting
-        const all_tracks = apple_data.tracks.map(track =>
-            limiter.schedule(() => search_spotify_track(req.session.user_id!, track.name, track.artist))
-        );
-
-        // wait for results from all of the promises
-        const search_results = await Promise.all(all_tracks);
         await add_spotify_tracks(req.session.user_id!, spotify_playlist_data.id, search_results.filter(uri => uri !== null));
         res.json({ success: true });
     } catch (err) {
