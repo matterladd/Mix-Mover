@@ -1,14 +1,22 @@
 import express, { Router } from 'express';
 import 'express-session'; // include for types
-import { SpotifyUser } from '../types';
-import { addSpotifyUser, getSpotifyTokens, getSpotifyUser } from '../db/queries.ts';
-import { scrape_apple_playlist } from '../services/apple_services.ts';
+import Bottleneck from 'bottleneck';
+import { SpotifyUser } from '../types/index.js';
+import { addSpotifyUser, getSpotifyTokens, getSpotifyUser } from '../db/queries.js';
+import { scrape_apple_playlist } from '../services/apple_services.js';
 import { 
     refresh_spotify_access_token, 
     create_spotify_playlist, 
     add_spotify_tracks, 
     search_spotify_track
-} from '../services/spotify_services.ts';
+} from '../services/spotify_services.js';
+
+// module scope to persist the same instance for each api call
+const limiter = new Bottleneck({
+    maxConcurrent: 10,
+    reservoir: 50,
+    
+});
 
 const spotify_api_routes = Router();
 const api_url = 'https://api.spotify.com/v1';
@@ -80,15 +88,17 @@ spotify_api_routes.post('/convert-apple', async (req, res, next) => {
         const apple_data = await scrape_apple_playlist(apple_link);
         const spotify_playlist_data = await create_spotify_playlist(req.session.user_id!, {
             name: apple_data.name,
-            description: null, // TODO: find description
+            description: `via ${apple_link}`, // TODO: find description
             public: false
         });
     
-        // TODO: batch requests to avoid rate limiting
-        const search_results = await Promise.all(
-            apple_data.tracks.map(track => search_spotify_track(req.session.user_id!, track.name, track.artist))
+        // batch requests to deal with rate limiting
+        const all_tracks = apple_data.tracks.map(track =>
+            limiter.schedule(() => search_spotify_track(req.session.user_id!, track.name, track.artist))
         );
-    
+
+        // wait for results from all of the promises
+        const search_results = await Promise.all(all_tracks);
         await add_spotify_tracks(req.session.user_id!, spotify_playlist_data.id, search_results.filter(uri => uri !== null));
         res.json({ success: true });
     } catch (err) {

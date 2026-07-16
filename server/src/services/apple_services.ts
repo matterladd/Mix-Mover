@@ -1,5 +1,5 @@
 import { firefox } from 'playwright';
-import { ApplePlaylist, Track } from '../types';
+import { ApplePlaylist, Track } from '../types/index.js';
 
 export async function scrape_apple_playlist(playlist_url: string): Promise<ApplePlaylist> {
     const browser = await firefox.launch(); // TODO: run these setups once instead of every time function runs

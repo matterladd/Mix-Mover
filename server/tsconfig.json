@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "module": "nodenext",
+        "moduleResolution": "nodenext",
+        "target": "ES2024",
+        "checkJs": false,
+        "experimentalDecorators": false,
+        "strictNullChecks": true,
+        "strictFunctionTypes": true,
+        "strict": true,
+        "sourceMap": true,
+        "outDir": "./dist",
+        "rootDir": "./src"
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/node_modules/*"
+    ]
+}

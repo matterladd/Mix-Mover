@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
 import 'express-session'; // include for types
 import bcrypt from 'bcrypt';
-import { getUserByEmail, getUserById, addUser } from '../db/queries.ts';
+import { getUserByEmail, getUserById, addUser } from '../db/queries.js';
 
 const SALT_ROUNDS = 12;
 const app_auth_routes = Router();

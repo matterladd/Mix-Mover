@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
 import 'express-session'; // include for types
-import { User, Token, Playlist, SpotifyTokenRefreshObj } from '../types';
-import { addTokensForUser, getSpotifyTokens } from '../db/queries.ts';
+import { User, Token, Playlist, SpotifyTokenRefreshObj } from '../types/index.js';
+import { addTokensForUser, getSpotifyTokens } from '../db/queries.js';
 
 const spotify_auth_routes = Router();
 const accounts_url = 'https://accounts.spotify.com'

@@ -1,5 +1,5 @@
-import db from './client.ts'
-import { User, Token, Playlist, SpotifyUser } from '../types';
+import db from './client.js'
+import { User, Token, Playlist, SpotifyUser } from '../types/index.js';
 
 export const getUserById =      db.prepare<[number], User>('SELECT * FROM users WHERE id = ?');
 export const getUserByEmail =   db.prepare<[string], User>('SELECT * FROM users WHERE email = ?');
