@@ -6,7 +6,7 @@
 This project is organized into three `npm` project domains: the *client*, *server*, and the *overall/top-level*. Running top-level runs the whole application, while running only the client or server will run that part of the stack. To install:
 1. Clone this repository
 2. Be sure you have `Node.js` and `npm` installed
-3. Run `npm install` in the root of the project, `./client`, and `./server` to install all three `npm` proejct domains
+3. Run `npm install` in the root of the project, `./client`, and `./server` to install all three `npm` project domains
 4. Run the full app with `npm run dev` at project root, or to run only frontend or backend, `npm run dev` at `./client` and `./server` respectively
 
 
