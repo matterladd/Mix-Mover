@@ -9,6 +9,9 @@ This project is organized into three `npm` project domains: the *client*, *serve
 3. Run `npm install` in the root of the project, `./client`, and `./server` to install all three `npm` project domains
 4. Run the full app with `npm run dev` at project root, or to run only frontend or backend, `npm run dev` at `./client` and `./server` respectively
 
+### Deployment
+- TODO
+
 ### File Structure
 #### `./client`
 - TODO
