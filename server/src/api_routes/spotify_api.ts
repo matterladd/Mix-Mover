@@ -20,10 +20,10 @@ const limiter = new Bottleneck({
 limiter.on("failed", async (error, jobInfo) => {
     if (error.retryAfter) {
         const waitMs = error.retryAfter * 1000;
-        console.warn(`retrying job ${jobInfo.options.id} in ${waitMs}`);
+        console.warn(`retrying job ${jobInfo.options.id} in ${waitMs} ms`);
         return waitMs;
     }
-    
+    throw error;
 });
 
 const spotify_api_routes = Router();
