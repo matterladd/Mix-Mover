@@ -23,11 +23,15 @@
     "tsx": "^4.22.1"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/bcrypt": "^6.0.0",
     "@types/better-sqlite3": "^7.6.13",
     "@types/express": "^5.0.6",
     "@types/express-session": "^1.19.0",
+    "eslint": "^10.7.0",
     "nodemon": "^3.1.14",
-    "typescript": "^7.0.2"
+    "prettier": "^3.9.5",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.64.0"
   }
 }

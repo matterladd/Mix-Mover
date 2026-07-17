@@ -1,4 +1,4 @@
-import db from './client.js';
+import db from "./client.js";
 
 // uses `exec` instead of `prepare` because this code is only run once
 db.exec(`
