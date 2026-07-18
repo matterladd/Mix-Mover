@@ -29,7 +29,7 @@ export async function scrape_apple_playlist(
   });
 
   return {
-    name: title as string,
+    name: title ?? "unknown title",
     tracks: parse_tracks(tracks as string[]), // asserting type is not null
   };
 }

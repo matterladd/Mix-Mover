@@ -1,12 +1,7 @@
 import express, { Router } from "express";
 import "express-session"; // include for types
-import {
-  User,
-  Token,
-  Playlist,
-  SpotifyTokenRefreshObj,
-} from "../types/index.js";
-import { addTokensForUser, getSpotifyTokens } from "../db/queries.js";
+import { SpotifyInitToken, Token } from "../types/index.js";
+import { addTokensForUser } from "../db/queries.js";
 
 const spotify_auth_routes = Router();
 const accounts_url = "https://accounts.spotify.com";
@@ -18,11 +13,17 @@ spotify_auth_routes.use(express.json());
  * Begin first-time authorization with the OAuth Authorization Code Flow
  */
 spotify_auth_routes.get("/", (req, res) => {
+  // * check if env variables exist
+  if (!process.env.SPOTIFY_CLIENT_ID)
+    throw new Error("SPOTIFY_CLIENT_ID environment variable not set.");
+  if (!process.env.SPOTIFY_CLIENT_SECRET)
+    throw new Error("SPOTIFY_CLIENT_SECRET environment variable not set.");
+
   const state = String(req.session.user_id); // Use the state to encode the user id which goes around the strict cookies // TODO: is this safe?
   const scope =
     "user-read-private user-read-email playlist-modify-public playlist-modify-private"; // all scopes needed for app
   const query_params = new URLSearchParams({
-    client_id: process.env.SPOTIFY_CLIENT_ID!, // TODO: why `!`?
+    client_id: process.env.SPOTIFY_CLIENT_ID,
     response_type: "code",
     redirect_uri: redirect_uri,
     state: state,
@@ -36,8 +37,14 @@ spotify_auth_routes.get("/", (req, res) => {
  * Gets a new access token + refresh token and writes to database
  */
 spotify_auth_routes.get("/callback", async (req, res) => {
-  const auth_code = String(req.query.code);
-  const state = req.query.state;
+  // * check if env variables exist
+  if (!process.env.SPOTIFY_CLIENT_ID)
+    throw new Error("SPOTIFY_CLIENT_ID environment variable not set.");
+  if (!process.env.SPOTIFY_CLIENT_SECRET)
+    throw new Error("SPOTIFY_CLIENT_SECRET environment variable not set.");
+
+  const auth_code = req.query.code as string; // TODO: Kinda lying here
+  const state = req.query.state as string;
   if (state != "1") throw new Error(`state does not match, state ${state}`); // TODO: fix hardcoded
   const response = await fetch(`${accounts_url}/api/token`, {
     method: "POST",
@@ -52,8 +59,8 @@ spotify_auth_routes.get("/callback", async (req, res) => {
     }),
   });
   if (!response.ok)
-    throw new Error("unable to get api token, status " + response.status);
-  const data: SpotifyTokenRefreshObj = await response.json();
+    throw new Error(`unable to get api token, status ${response.status}`);
+  const data = await response.json() as SpotifyInitToken;
   const token_obj: Token = {
     user_id: Number(state),
     service: "spotify",

@@ -9,12 +9,18 @@ import app_api_routes from "./api_routes/app_api.js";
 import spotify_auth_routes from "./auth_routes/spotify_auth.js";
 import spotify_api_routes from "./api_routes/spotify_api.js";
 
+// * check if env variable exists
+if (!process.env.EXPRESS_SESSION_SECRET) {
+  throw new Error("EXPRESS_SESSION_SECRET environment variable not set.");
+}
+
+// * setup app and session store instances
 const app = express();
 const port = 3000;
 const SqliteStoreInstance = SqliteStore(session);
 
 // NOTE: app does not currently use any parsing middleware such as express.json()
-
+// * setup the routes
 app.use(
   session({
     store: new SqliteStoreInstance({
@@ -24,7 +30,7 @@ app.use(
         intervalMs: 900000, // clear expired sessions every 15 minutes (global timer)
       },
     }),
-    secret: process.env.EXPRESS_SESSION_SECRET!,
+    secret: process.env.EXPRESS_SESSION_SECRET,
     cookie: {
       httpOnly: true, // prevents JS access to cookie (security)
       secure: false, // TODO edit to true in prod (need HTTPS)
@@ -52,6 +58,7 @@ app.get(/.*/, (req, res) => {
 
 // * Custom Error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  if (res.headersSent) next(err);
   res.status(500).json({ message: err.message });
 });
 

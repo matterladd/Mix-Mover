@@ -11,7 +11,7 @@ app_api_routes.get("/me", (req, res) => {
     res.status(401).json({ error: "not logged in" });
     return;
   }
-  const user: any = getUserById.get(req.session.user_id);
+  const user = getUserById.get(req.session.user_id);
   if (!user) {
     res
       .status(404)

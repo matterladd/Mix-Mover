@@ -1,7 +1,8 @@
 import express, { Router } from "express";
 import "express-session"; // include for types
 import bcrypt from "bcrypt";
-import { getUserByEmail, getUserById, addUser } from "../db/queries.js";
+import { getUserByEmail, addUser } from "../db/queries.js";
+import { LoginBody } from "../types/index.js";
 
 const SALT_ROUNDS = 12;
 const app_auth_routes = Router();
@@ -10,7 +11,13 @@ app_auth_routes.use(express.json()); // expect and parse json requests
 
 app_auth_routes.post("/login", async (req, res) => {
   // TODO: are async functions handled correctly by express?
-  const { email, password } = req.body;
+
+  if (!req.body) {
+    res.status(400).json({ error: "Bad request" })
+    return;
+  }
+  const body = req.body as LoginBody; // TODO: Not exactly a fix
+  const { email, password } = body;
   const user = getUserByEmail.get(email);
   if (user) {
     // TODO: logic here can be improved
@@ -40,7 +47,12 @@ app_auth_routes.post("/logout", (req, res) => {
 });
 
 app_auth_routes.post("/signup", async (req, res) => {
-  const { email, password } = req.body;
+  if (!req.body) {
+    res.status(400).json({ error: "Bad request" })
+    return;
+  }
+  const body = req.body as LoginBody; // TODO: Not exactly a fix
+  const { email, password } = body;
   if (getUserByEmail.get(email)) {
     // returns undefined if not found in table
     res.status(401).json({ error: "User already exists" });

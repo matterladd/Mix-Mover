@@ -5,6 +5,8 @@
   "main": "script.js",
   "scripts": {
     "dev": "nodemon --exec tsx --env-file=.env src/main.ts",
+    "lint": "eslint .",
+    "prettier": "prettier --check .",
     "build": "tsc",
     "start": "node dist/main.js"
   },
@@ -13,6 +15,7 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@spotify/web-api-ts-sdk": "^1.2.0",
     "bcrypt": "^6.0.0",
     "better-sqlite3": "^12.10.0",
     "better-sqlite3-session-store": "^0.1.0",
@@ -29,6 +32,7 @@
     "@types/express": "^5.0.6",
     "@types/express-session": "^1.19.0",
     "eslint": "^10.7.0",
+    "eslint-config-prettier": "^10.1.8",
     "nodemon": "^3.1.14",
     "prettier": "^3.9.5",
     "typescript": "^6.0.3",

@@ -3,6 +3,7 @@
 import js from "@eslint/js";
 import { defineConfig } from "eslint/config";
 import tseslint from "typescript-eslint";
+import eslintConfigPrettier from "eslint-config-prettier/flat";
 
 export default defineConfig({
   files: ["**/*.{js,ts}"],
@@ -10,10 +11,23 @@ export default defineConfig({
     js.configs.recommended,
     tseslint.configs.strictTypeChecked,
     tseslint.configs.stylisticTypeChecked,
+    eslintConfigPrettier,
   ],
   languageOptions: {
     parserOptions: {
-      projectService: true,
+      projectService: {
+        allowDefaultProject: ["eslint.config.js"],
+      },
     },
+  },
+  rules: {
+    "@typescript-eslint/restrict-template-expressions": [
+      "warn",
+      {
+        // Allow numbers + bools to be converted to strings for `${some_var}` type syntax
+        allowNumber: true, 
+        allowBoolean: true,
+      },
+    ],
   },
 });
