@@ -19,7 +19,12 @@ import {
   search_spotify_track,
 } from "../services/spotify_services.js";
 
-// * module scope to persist the same instance for each api call
+// * Check if env variables exist
+if (!process.env.SPOTIFY_API_URL)
+  throw new Error("SPOTIFY_API_URL environment variable not set.");
+const api_url = process.env.SPOTIFY_API_URL;
+
+// * Module scope to persist the same instance for each api call
 const limiter = new Bottleneck({
   maxConcurrent: 10,
 });
@@ -35,9 +40,8 @@ limiter.on("failed", (error: RateLimitError, jobInfo) => {
   throw error;
 });
 
+// * Set up the routes
 const spotify_api_routes = Router();
-const api_url = process.env.SPOTIFY_API_URL;
-
 spotify_api_routes.use(express.json());
 
 /**

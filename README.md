@@ -43,3 +43,12 @@ This project is organized into three `npm` project domains: the *client*, *serve
 
 #### Project
 - `concurrently` -> runs multiple commands concurrently. Used to run client and server at the same time.
+
+### Docs
+- Backend Routes:
+    - `/api`: Root of all backend services.
+    - `/api/auth`: Contains all routes having to do with MixMover account authorization.
+    - `/api/spotify_auth`: Contains all routes having to do with Spotify account authorization.
+    - `/api/app`: Contains all routes that concern MixMover data.
+    - `/api/spotify`: Contains all routes that concern Spotify data. Where most of the Spotify API calls live.
+- Backend errors will return `{ error: "message" }` to the frontend.

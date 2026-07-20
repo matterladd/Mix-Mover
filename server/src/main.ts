@@ -9,18 +9,24 @@ import app_api_routes from "./api_routes/app_api.js";
 import spotify_auth_routes from "./auth_routes/spotify_auth.js";
 import spotify_api_routes from "./api_routes/spotify_api.js";
 
-// * check if env variable exists
-if (!process.env.EXPRESS_SESSION_SECRET) {
+// * Check if env variables exist
+if (!process.env.EXPRESS_SESSION_SECRET)
   throw new Error("EXPRESS_SESSION_SECRET environment variable not set.");
-}
+if (!process.env.EXPRESS_IP)
+  throw new Error("EXPRESS_IP environment variable not set.");
+if (!process.env.EXPRESS_PORT)
+  throw new Error("EXPRESS_PORT environment variable not set.");
 
-// * setup app and session store instances
+const session_secret = process.env.EXPRESS_SESSION_SECRET;
+const ip = process.env.EXPRESS_IP;
+const port = Number(process.env.EXPRESS_PORT);
+
+// * Setup app and session store instances
 const app = express();
-const port = 3000;
 const SqliteStoreInstance = SqliteStore(session);
 
 // NOTE: app does not currently use any parsing middleware such as express.json()
-// * setup the routes
+// * Setup the routes
 app.use(
   session({
     store: new SqliteStoreInstance({
@@ -30,7 +36,7 @@ app.use(
         intervalMs: 900000, // clear expired sessions every 15 minutes (global timer)
       },
     }),
-    secret: process.env.EXPRESS_SESSION_SECRET,
+    secret: session_secret,
     cookie: {
       httpOnly: true, // prevents JS access to cookie (security)
       secure: false, // TODO edit to true in prod (need HTTPS)
@@ -51,8 +57,8 @@ app.use("/api/app", app_api_routes); // mount app api routes
 app.use("/api/spotify_auth", spotify_auth_routes); // mount spotify auth routes
 app.use("/api/spotify", spotify_api_routes); // mount apotify api routes
 
+// * Catch-all
 app.get(/.*/, (req, res) => {
-  // catch-all
   res.sendFile(path.resolve("", "../client/index.html"));
 });
 
@@ -62,8 +68,8 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({ message: err.message });
 });
 
-const server = app.listen(port, "127.0.0.1", () => {
-  console.log(`App listening on port ${port}`);
+const server = app.listen(port, ip, () => {
+  console.log(`App listening on ${ip}:${port}`);
 });
 
 server.on("error", (err) => {
