@@ -1,0 +1,14 @@
+{
+  "folders": [
+    { "name": "root", "path": "." },
+
+    // frontend
+    { "name": "client", "path": "client" },
+
+    // backend
+    { "name": "server", "path": "server" },
+  ],
+  "settings": {
+    "terminal.integrated.cwd": ".",
+  },
+}

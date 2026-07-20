@@ -36,7 +36,7 @@ limiter.on("failed", (error: RateLimitError, jobInfo) => {
 });
 
 const spotify_api_routes = Router();
-const api_url = "https://api.spotify.com/v1";
+const api_url = process.env.SPOTIFY_API_URL;
 
 spotify_api_routes.use(express.json());
 
