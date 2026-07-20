@@ -13,8 +13,22 @@ import {
   RateLimitError
 } from "../types/index.js";
 
-const accounts_url = "https://accounts.spotify.com";
-const api_url = "https://api.spotify.com/v1";
+// * check if env variables exist
+if (!process.env.SPOTIFY_CLIENT_ID)
+  throw new Error("SPOTIFY_CLIENT_ID environment variable not set.");
+if (!process.env.SPOTIFY_CLIENT_SECRET)
+  throw new Error("SPOTIFY_CLIENT_SECRET environment variable not set.");
+if (!process.env.SPOTIFY_ACCOUNTS_URL)
+  throw new Error("SPOTIFY_ACCOUNTS_URL environment variable not set.");
+if (!process.env.SPOTIFY_API_URL)
+  throw new Error("SPOTIFY_API_URL environment variable not set.");
+if (!process.env.SPOTIFY_REDIRECT_URI)
+  throw new Error("SPOTIFY_REDIRECT_URI environment variable not set.");
+
+const client_id = process.env.SPOTIFY_CLIENT_ID;
+const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
+const accounts_url = process.env.SPOTIFY_ACCOUNTS_URL;
+const api_url = process.env.SPOTIFY_API_URL;
 
 /**
  * Get a new access token from Spotify with your refresh token
@@ -23,12 +37,6 @@ const api_url = "https://api.spotify.com/v1";
 export async function refresh_spotify_access_token(
   user_id: number,
 ): Promise<void> {
-  // * Check if env variables exist
-  if (!process.env.SPOTIFY_CLIENT_ID)
-    throw new Error("SPOTIFY_CLIENT_ID environment variable not set.");
-  if (!process.env.SPOTIFY_CLIENT_SECRET)
-    throw new Error("SPOTIFY_CLIENT_SECRET environment variable not set.");
-
   // * Get user's Spotify access and refresh tokens
   const tokens = getSpotifyTokens.get(user_id);
   if (!tokens) throw new Error("User's Spotify tokens not found.");
@@ -38,7 +46,7 @@ export async function refresh_spotify_access_token(
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Basic ${Buffer.from(process.env.SPOTIFY_CLIENT_ID + ":" + process.env.SPOTIFY_CLIENT_SECRET).toString("base64")}`,
+      Authorization: `Basic ${Buffer.from(client_id + ":" + client_secret).toString("base64")}`,
     },
     body: new URLSearchParams({
       grant_type: "refresh_token",
