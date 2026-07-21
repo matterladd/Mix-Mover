@@ -12,11 +12,17 @@ if (!process.env.SPOTIFY_ACCOUNTS_URL)
   throw new Error("SPOTIFY_ACCOUNTS_URL environment variable not set.");
 if (!process.env.SPOTIFY_REDIRECT_URI)
   throw new Error("SPOTIFY_REDIRECT_URI environment variable not set.");
+if (!process.env.FRONTEND_IP)
+  throw new Error("FRONTEND_IP environment variable not set.");
+if (!process.env.FRONTEND_PORT)
+  throw new Error("FRONTEND_PORT environment variable not set.");
 
 const client_id = process.env.SPOTIFY_CLIENT_ID;
 const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 const accounts_url = process.env.SPOTIFY_ACCOUNTS_URL;
 const redirect_uri = process.env.SPOTIFY_REDIRECT_URI;
+const frontend_ip = process.env.FRONTEND_IP;
+const frontend_port = process.env.FRONTEND_PORT;
 const spotify_auth_routes = Router();
 
 spotify_auth_routes.use(express.json());
@@ -70,7 +76,7 @@ spotify_auth_routes.get("/callback", async (req, res) => {
     expires_at: data.expires_in, // TODO: inacurrate (at != in)
   };
   addTokensForUser(token_obj);
-  res.redirect("http://127.0.0.1:5173/account?spotify_connected=true");
+  res.redirect(`http://${frontend_ip}:${frontend_port}/account?spotify_connected=true`);
 });
 
 export default spotify_auth_routes;
