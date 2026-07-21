@@ -53,7 +53,7 @@ export interface SpotifyUserData {
   display_name: string;
   external_urls: {
     spotify: string;
-  }
+  };
   href: string;
   images: SpotifyImageObject[];
   uri: string;

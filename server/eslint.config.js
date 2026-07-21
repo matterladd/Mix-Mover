@@ -25,7 +25,7 @@ export default defineConfig({
       "warn",
       {
         // Allow numbers + bools to be converted to strings for `${some_var}` type syntax
-        allowNumber: true, 
+        allowNumber: true,
         allowBoolean: true,
       },
     ],

@@ -13,7 +13,7 @@ app_auth_routes.post("/login", async (req, res) => {
   // TODO: are async functions handled correctly by express?
 
   if (!req.body) {
-    res.status(400).json({ error: "Bad request" })
+    res.status(400).json({ error: "Bad request" });
     return;
   }
   const body = req.body as LoginBody; // TODO: Not exactly a fix
@@ -48,7 +48,7 @@ app_auth_routes.post("/logout", (req, res) => {
 
 app_auth_routes.post("/signup", async (req, res) => {
   if (!req.body) {
-    res.status(400).json({ error: "Bad request" })
+    res.status(400).json({ error: "Bad request" });
     return;
   }
   const body = req.body as LoginBody; // TODO: Not exactly a fix

@@ -1,3 +1,4 @@
+import env from "../config/env.js";
 import {
   getSpotifyTokens,
   addTokensForUser,
@@ -10,25 +11,8 @@ import {
   SpotifyPlaylist,
   SpotifyError,
   SpotifySearchResults,
-  RateLimitError
+  RateLimitError,
 } from "../types/index.js";
-
-// * check if env variables exist
-if (!process.env.SPOTIFY_CLIENT_ID)
-  throw new Error("SPOTIFY_CLIENT_ID environment variable not set.");
-if (!process.env.SPOTIFY_CLIENT_SECRET)
-  throw new Error("SPOTIFY_CLIENT_SECRET environment variable not set.");
-if (!process.env.SPOTIFY_ACCOUNTS_URL)
-  throw new Error("SPOTIFY_ACCOUNTS_URL environment variable not set.");
-if (!process.env.SPOTIFY_API_URL)
-  throw new Error("SPOTIFY_API_URL environment variable not set.");
-if (!process.env.SPOTIFY_REDIRECT_URI)
-  throw new Error("SPOTIFY_REDIRECT_URI environment variable not set.");
-
-const client_id = process.env.SPOTIFY_CLIENT_ID;
-const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
-const accounts_url = process.env.SPOTIFY_ACCOUNTS_URL;
-const api_url = process.env.SPOTIFY_API_URL;
 
 /**
  * Get a new access token from Spotify with your refresh token
@@ -42,11 +26,11 @@ export async function refresh_spotify_access_token(
   if (!tokens) throw new Error("User's Spotify tokens not found.");
 
   // * Send API request
-  const response = await fetch(`${accounts_url}/api/token`, {
+  const response = await fetch(`${env.SPOTIFY_ACCOUNTS_URL}/api/token`, {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: `Basic ${Buffer.from(client_id + ":" + client_secret).toString("base64")}`,
+      Authorization: `Basic ${Buffer.from(env.SPOTIFY_CLIENT_ID + ":" + env.SPOTIFY_CLIENT_SECRET).toString("base64")}`,
     },
     body: new URLSearchParams({
       grant_type: "refresh_token",
@@ -89,7 +73,7 @@ export async function create_spotify_playlist(
   if (!tokens) throw new Error("User's Spotify tokens not found.");
 
   // * Send API request
-  const response = await fetch(`${api_url}/me/playlists`, {
+  const response = await fetch(`${env.SPOTIFY_API_URL}/me/playlists`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${tokens.access_token}`,
@@ -143,14 +127,17 @@ export async function add_spotify_tracks(
   const body = { uris: tracks };
 
   // * Send API request
-  const response = await fetch(`${api_url}/playlists/${playlist_id}/items`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${tokens.access_token}`,
-      "Content-Type": "application/json",
+  const response = await fetch(
+    `${env.SPOTIFY_API_URL}/playlists/${playlist_id}/items`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${tokens.access_token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
     },
-    body: JSON.stringify(body),
-  });
+  );
 
   // * Handle response
   const raw_data: unknown = await response.json();
@@ -186,7 +173,7 @@ export async function search_spotify_track(
   });
 
   // * Send API request
-  const response = await fetch(`${api_url}/search?${query}`, {
+  const response = await fetch(`${env.SPOTIFY_API_URL}/search?${query}`, {
     headers: { Authorization: `Bearer ${tokens.access_token}` },
   });
 

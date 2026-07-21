@@ -1,3 +1,4 @@
+import env from "../config/env.js";
 import express, { Router } from "express";
 import "express-session"; // include for types
 import Bottleneck from "bottleneck";
@@ -18,11 +19,6 @@ import {
   add_spotify_tracks,
   search_spotify_track,
 } from "../services/spotify_services.js";
-
-// * Check if env variables exist
-if (!process.env.SPOTIFY_API_URL)
-  throw new Error("SPOTIFY_API_URL environment variable not set.");
-const api_url = process.env.SPOTIFY_API_URL;
 
 // * Module scope to persist the same instance for each api call
 const limiter = new Bottleneck({
@@ -65,7 +61,7 @@ spotify_api_routes.get("/me", async (req, res, next) => {
       if (!tokens) throw new Error("User's Spotify tokens not found.");
 
       // * Send API request
-      const response = await fetch(`${api_url}/me`, {
+      const response = await fetch(`${env.SPOTIFY_API_URL}/me`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${tokens.access_token}`,

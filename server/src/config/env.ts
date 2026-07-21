@@ -1,11 +1,20 @@
 function requireEnv(...names: string[]) {
-  const missing = names.filter((name) => !process.env[name]); // uses bracket notation instead of the usual dot notation
-  if (missing.length > 0) {
-    throw new Error(
-      `Missing required environment variables: ${missing.join(", ")}`, // joins all entries into one string, separated each by ", "
-    );
+  const result: Record<string, string> = {};
+  const missing = [];
+
+  // 'of' for values of an iterable, 'in' for property keys of iterable.
+  // in this case 'in' would give us the indexes of the array.
+  for (const name of names) {
+    const value = process.env[name];
+    if (!value) {
+      missing.push(name);
+    } else {
+      result[name] = value;
+    }
   }
-  return Object.fromEntries(names.map((name) => [name, process.env[name]])); // takes an array of pairs and converts them to a JS object
+  if (missing.length > 0)
+    throw new Error(`Missing environment variables: ${missing.join(", ")}`);
+  return result;
 }
 
 const env = requireEnv(
@@ -14,6 +23,11 @@ const env = requireEnv(
   "SPOTIFY_ACCOUNTS_URL",
   "SPOTIFY_API_URL",
   "SPOTIFY_REDIRECT_URI",
+  "FRONTEND_IP",
+  "FRONTEND_PORT",
+  "EXPRESS_IP",
+  "EXPRESS_PORT",
+  "EXPRESS_SESSION_SECRET",
 );
 
 export default env;

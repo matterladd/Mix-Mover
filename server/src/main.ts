@@ -1,3 +1,4 @@
+import env from "./config/env.js";
 import "./db/schema.js"; // runs once to initialize db
 import db from "./db/client.js";
 import express, { NextFunction, Request, Response } from "express";
@@ -8,18 +9,6 @@ import app_auth_routes from "./auth_routes/app_auth.js";
 import app_api_routes from "./api_routes/app_api.js";
 import spotify_auth_routes from "./auth_routes/spotify_auth.js";
 import spotify_api_routes from "./api_routes/spotify_api.js";
-
-// * Check if env variables exist
-if (!process.env.EXPRESS_SESSION_SECRET)
-  throw new Error("EXPRESS_SESSION_SECRET environment variable not set.");
-if (!process.env.EXPRESS_IP)
-  throw new Error("EXPRESS_IP environment variable not set.");
-if (!process.env.EXPRESS_PORT)
-  throw new Error("EXPRESS_PORT environment variable not set.");
-
-const session_secret = process.env.EXPRESS_SESSION_SECRET;
-const ip = process.env.EXPRESS_IP;
-const port = Number(process.env.EXPRESS_PORT);
 
 // * Setup app and session store instances
 const app = express();
@@ -36,7 +25,7 @@ app.use(
         intervalMs: 900000, // clear expired sessions every 15 minutes (global timer)
       },
     }),
-    secret: session_secret,
+    secret: env.EXPRESS_SESSION_SECRET,
     cookie: {
       httpOnly: true, // prevents JS access to cookie (security)
       secure: false, // TODO edit to true in prod (need HTTPS)
@@ -68,8 +57,8 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({ message: err.message });
 });
 
-const server = app.listen(port, ip, () => {
-  console.log(`App listening on ${ip}:${port}`);
+const server = app.listen(Number(env.EXPRESS_PORT), env.EXPRESS_IP, () => {
+  console.log(`App listening on ${env.EXPRESS_IP}:${env.EXPRESS_PORT}`);
 });
 
 server.on("error", (err) => {
