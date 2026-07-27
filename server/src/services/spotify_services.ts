@@ -1,8 +1,11 @@
+import crypto from "crypto";
 import env from "../config/env.js";
 import {
   getSpotifyTokens,
   addTokensForUser,
   addPlaylist,
+  getSpotifySongCache,
+  addSpotifySongCache,
 } from "../db/queries.js";
 import {
   Token,
@@ -172,6 +175,25 @@ export async function search_spotify_track(
     limit: "1",
   });
 
+  // * Check db cache first
+  // TODO if done here, then db cache checks are rate-limited the same as Spotify API queries parce que where this function is called. Is this wanted?
+  const cached = getSpotifySongCache.get(query.toString());
+
+  console.log(`Cached?: ${cached ? true : false}`);
+
+  if (cached) {
+
+    console.log(`cache hit: ${query}`);
+
+    const data = JSON.parse(cached.response_json) as SpotifySearchResults;
+    const result = data.tracks?.items?.[0];
+    // TODO Cache null results?
+
+    console.log(`Returned result of cache: ${result?.uri ?? null}`);
+    
+    return result?.uri ?? null; // null if track is not found, otherwise returns Spotify URI
+  }
+
   // * Send API request
   const response = await fetch(`${env.SPOTIFY_API_URL}/search?${query}`, {
     headers: { Authorization: `Bearer ${tokens.access_token}` },
@@ -197,5 +219,16 @@ export async function search_spotify_track(
   }
   const data = raw_data as SpotifySearchResults;
   const result = data.tracks?.items?.[0]; // access items[0] only if it exists
+
+  // * Cache result
+  // * will use `data` instead of `result` to allow extensibility later on
+  const query_hash = crypto
+    .createHash("sha256")
+    .update(JSON.stringify(data))
+    .digest("hex");
+  addSpotifySongCache.run(query_hash, query.toString(), JSON.stringify(data));
+
+  console.log(`Returned result of search: ${result?.uri ?? null}`);
+
   return result?.uri ?? null; // null if track is not found, otherwise returns Spotify URI
 }

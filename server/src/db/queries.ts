@@ -1,5 +1,11 @@
 import db from "./client.js";
-import { User, Token, Playlist, SpotifyUser } from "../types/index.js";
+import {
+  User,
+  Token,
+  Playlist,
+  SpotifyUser,
+  SpotifySongCache,
+} from "../types/index.js";
 
 export const getUserById = db.prepare<[number], User>(
   "SELECT * FROM users WHERE id = ?",
@@ -69,4 +75,16 @@ export const addPlaylist = db.prepare<
 >(`
     INSERT INTO playlists (user_id, source_service, target_service, source_id, target_id, source_url, target_url, name)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)    
+`);
+
+export const getSpotifySongCache = db.prepare<[string], SpotifySongCache>(
+  `SELECT * FROM spotify_search_cache WHERE query = ?`,
+);
+
+export const addSpotifySongCache = db.prepare<
+  [string, string, string],
+  SpotifySongCache
+>(`
+    INSERT INTO spotify_search_cache (query_hash, query, response_json)
+    VALUES (?, ?, ?)  
 `);

@@ -123,6 +123,13 @@ export interface SpotifyUser {
   uri: string | null;
 }
 
+export interface SpotifySongCache {
+  query_hash: string;
+  query: string;
+  response_json: string;
+  created_at: string;
+}
+
 // * Class extensions
 
 export class RateLimitError extends Error {

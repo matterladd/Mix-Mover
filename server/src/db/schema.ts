@@ -45,4 +45,12 @@ db.exec(`
         uri TEXT,
         FOREIGN KEY (user_id) REFERENCES users(id)
     );
+
+    CREATE TABLE IF NOT EXISTS spotify_search_cache (
+        query_hash TEXT PRIMARY KEY,
+        query TEXT,
+        response_json TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+
 `);
