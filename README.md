@@ -1,6 +1,6 @@
-# Mix Mover
+# MixMover
 ### For when your friend keeps sending you those dang Apple Music links
-**Mix Mover** is a web app that converts a music playlist from one service to another. I built this project to showcase my full-stack development skills as well as personal use and the use of anyone looking for such a tool.
+**MixMover** is a web app that converts a music playlist from one service to another. I built this project to showcase my full-stack development skills as well as personal use and the use of anyone looking for such a tool.
 
 ## Installation
 This project is organized into three `npm` project domains: the *client*, *server*, and the *overall/top-level*. Running top-level runs the whole application, while running only the client or server will run that part of the stack. To install:
