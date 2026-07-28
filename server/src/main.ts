@@ -5,10 +5,13 @@ import express, { NextFunction, Request, Response } from "express";
 import session from "express-session";
 import SqliteStore from "better-sqlite3-session-store";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import app_auth_routes from "./auth_routes/app_auth.js";
 import app_api_routes from "./api_routes/app_api.js";
 import spotify_auth_routes from "./auth_routes/spotify_auth.js";
 import spotify_api_routes from "./api_routes/spotify_api.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // * Setup app and session store instances
 const app = express();
@@ -28,7 +31,7 @@ app.use(
     secret: env.EXPRESS_SESSION_SECRET,
     cookie: {
       httpOnly: true, // prevents JS access to cookie (security)
-      secure: false, // TODO edit to true in prod (need HTTPS)
+      secure: false,
       sameSite: "strict",
     },
     resave: false,
@@ -36,19 +39,18 @@ app.use(
   }),
 );
 
-app.get("/", (req, res) => {
-  res.send("Hello world! This is the root of the backend");
-});
-
 // * Note that we use `/api` for every backend route!
 app.use("/api/auth", app_auth_routes); // mount app auth routes
 app.use("/api/app", app_api_routes); // mount app api routes
 app.use("/api/spotify_auth", spotify_auth_routes); // mount spotify auth routes
 app.use("/api/spotify", spotify_api_routes); // mount apotify api routes
 
+// * Serve built frontend assets
+app.use(express.static(path.resolve(__dirname, "../../client/dist")));
+
 // * Catch-all
 app.get(/.*/, (req, res) => {
-  res.sendFile(path.resolve("", "../client/index.html"));
+  res.sendFile(path.resolve(__dirname, "../../client/dist/index.html"));
 });
 
 // * Custom Error handler
