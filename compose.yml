@@ -1,0 +1,6 @@
+services:
+  mixmover:
+    build:
+      context: ./
+    env_file:
+      - ./server/.env
