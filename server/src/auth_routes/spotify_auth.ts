@@ -60,7 +60,7 @@ spotify_auth_routes.get("/callback", async (req, res) => {
   };
   addTokensForUser(token_obj);
   res.redirect(
-    `http://${env.FRONTEND_IP}:${env.FRONTEND_PORT}/account?spotify_connected=true`,
+    `http://${env.FRONTEND_URL}/account?spotify_connected=true`,
   );
 });
 
