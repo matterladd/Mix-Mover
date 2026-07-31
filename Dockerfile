@@ -28,7 +28,7 @@ COPY ./client ./
 RUN npm run build
 
 # ---------- Build backend ----------
-FROM dhi.io/node:24-alpine3.23-dev AS backend-build
+FROM dhi.io/node:24-dev AS backend-build
 WORKDIR /server
 RUN --mount=type=cache,target=/root/.npm \
     --mount=type=bind,source=server/package.json,target=package.json \
@@ -40,7 +40,7 @@ COPY ./server ./
 RUN npm run build
 
 # ---------- Get only production-needed dependencies ----------
-FROM dhi.io/node:24-alpine3.23-dev AS prod-dependencies
+FROM dhi.io/node:24-dev AS prod-dependencies
 WORKDIR /prod
 RUN --mount=type=cache,target=/root/.npm \
     --mount=type=bind,source=server/package.json,target=package.json \
@@ -48,15 +48,24 @@ RUN --mount=type=cache,target=/root/.npm \
     npm ci --omit=dev
 
 # ---------- minimal runtime image with compiled app and production deps ----------
-FROM dhi.io/node:24-alpine3.23 AS runner
-ENV PATH=/app/node_modules/.bin:$PATH
+FROM dhi.io/node:24-dev AS runner
+WORKDIR /app
+
+COPY --from=prod-dependencies --chown=node:node /prod/node_modules ./server/node_modules
+
+WORKDIR /app/server
+ENV PLAYWRIGHT_BROWSERS_PATH=/app/server/ms-playwright
+RUN npx playwright install --with-deps firefox && \
+    chown -R node:node ${PLAYWRIGHT_BROWSERS_PATH}
+
 WORKDIR /app
 COPY --from=frontend-build --chown=node:node /client/dist ./client/dist
 COPY --from=backend-build --chown=node:node /server/dist ./server/dist
-COPY --from=prod-dependencies --chown=node:node /prod/node_modules ./server/node_modules
+
+USER node
 
 # Expose the port that the application listens on.
-EXPOSE 3000
+EXPOSE 8000
 
 # Run the application.
 CMD ["node", "server/dist/main.js"]

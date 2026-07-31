@@ -14,6 +14,7 @@ dist-ssr
 .env
 *.db*
 test.ts
+data
 
 # Editor directories and files
 .vscode/*
