@@ -11,10 +11,10 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { useAuthContext } from "@/context/AuthContext";
+import { useAuthContext } from "@/context/auth/index";
 import { useState } from "react"
 import { Link, useNavigate } from 'react-router-dom'
-import { useSpotifyContext } from "@/context/SpotifyContext"
+import { useSpotifyContext } from "@/context/spotify/index"
 
 export function LoginForm({
   className,

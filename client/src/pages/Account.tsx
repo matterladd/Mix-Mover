@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { useAuthContext } from "@/context/AuthContext";
+import { useAuthContext } from "@/context/auth/index";
 import { useNavigate } from "react-router-dom";
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from "@/components/ui/item";
-import { useSpotifyContext } from "@/context/SpotifyContext";
+import { useSpotifyContext } from "@/context/spotify/index";
 import { useEffect } from "react";
 
 export default function Account() {

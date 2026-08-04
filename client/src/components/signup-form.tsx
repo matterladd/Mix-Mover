@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { useAuthContext } from "@/context/AuthContext"
+import { useAuthContext } from "@/context/auth/index"
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   const navigate = useNavigate();
