@@ -4,11 +4,12 @@ import { HugeiconsIcon } from "@hugeicons/react";
 
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();
-  const toggle = () => theme === 'dark' ? setTheme('light') : setTheme('dark');
+  const toggle = () =>
+    theme === "dark" ? setTheme("light") : setTheme("dark");
   return (
     <button onClick={toggle}>
-      {theme === 'dark' && <HugeiconsIcon icon={Moon} />}
-      {theme === 'light' && <HugeiconsIcon icon={Sun} />}
+      {theme === "dark" && <HugeiconsIcon icon={Moon} />}
+      {theme === "light" && <HugeiconsIcon icon={Sun} />}
     </button>
   );
 }

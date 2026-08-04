@@ -1,20 +1,17 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent
-} from "@/components/ui/card"
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
-} from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 import { useAuthContext } from "@/context/auth/index";
-import { useState } from "react"
-import { Link, useNavigate } from 'react-router-dom'
-import { useSpotifyContext } from "@/context/spotify/index"
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useSpotifyContext } from "@/context/spotify/index";
 
 export function LoginForm({
   className,
@@ -31,20 +28,20 @@ export function LoginForm({
   async function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault(); // stops the default form submit behavior (sending http)
 
-    const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include', // tells browser to send/receive cookies
-        body: JSON.stringify({ email, password })
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include", // tells browser to send/receive cookies
+      body: JSON.stringify({ email, password }),
     });
     const data = await res.json();
     if (!res.ok) {
-        console.error(data.error);
-        // setIsLoggedIn(false);
+      console.error(data.error);
+      // setIsLoggedIn(false);
     } else {
-        setUser({id: data.id, email: data.email});
-        updateSpotifyUser();
-        navigate('/');
+      setUser({ id: data.id, email: data.email });
+      updateSpotifyUser();
+      navigate("/");
     }
   }
 
@@ -75,12 +72,13 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input 
-                  id="password" 
-                  type="password" 
+                <Input
+                  id="password"
+                  type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  required />
+                  required
+                />
               </Field>
               <Field>
                 <Button type="submit">Login</Button>
@@ -93,5 +91,5 @@ export function LoginForm({
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
