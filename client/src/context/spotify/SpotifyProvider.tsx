@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { SpotifyUser } from "@/types";
 import { SpotifyContext } from "./SpotifyContext";
 
@@ -22,6 +22,10 @@ export function SpotifyProvider({ children }: { children: React.ReactNode }) {
       })
       .catch((err) => console.error(err));
   };
+
+  useEffect(() => {
+    updateSpotifyUser();
+  }, []);
 
   return (
     <SpotifyContext value={{ spotifyUser, setSpotifyUser, updateSpotifyUser }}>
