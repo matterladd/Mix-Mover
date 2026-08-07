@@ -3,6 +3,12 @@ name: Check GHCR Permissions
 on:
   workflow_dispatch:
 
+env:
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  # IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: matterladd/mix-mover
+
 permissions:
   contents: read
   packages: write
@@ -17,5 +23,5 @@ jobs:
       - name: Push a tiny test tag
         run: |
           docker pull alpine:latest
-          docker tag alpine:latest ghcr.io/${{ github.repository }}:permtest
-          docker push ghcr.io/${{ github.repository }}:permtest
+          docker tag alpine:latest ghcr.io/${{ env.IMAGE_NAME }}:permtest
+          docker push ghcr.io/${{ env.IMAGE_NAME }}:permtest
