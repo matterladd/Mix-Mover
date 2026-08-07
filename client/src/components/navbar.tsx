@@ -18,15 +18,24 @@ import { Button } from "./ui/button";
 import ThemeToggle from "@/components/theme-toggle";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Hamburger } from "@hugeicons/core-free-icons";
+import { useAuthContext } from "@/context/auth";
 
-const navLinks: { label: string; to: string }[] = [
-  { label: "Home", to: "/" },
-  { label: "Login", to: "/login" },
-  { label: "Sign up", to: "/signup" },
-  { label: "Account", to: "/account" },
+const allNavLinks: { onlyGuest: boolean, onlyAuthenticated: boolean, label: string; to: string }[] = [
+  { onlyGuest: false, onlyAuthenticated: false, label: "Home", to: "/" },
+  { onlyGuest: true, onlyAuthenticated: false, label: "Login", to: "/login" },
+  { onlyGuest: true, onlyAuthenticated: false, label: "Sign up", to: "/signup" },
+  { onlyGuest: false, onlyAuthenticated: true, label: "Account", to: "/account" },
 ];
 
 export default function NavBar() {
+  const { user } = useAuthContext();
+  let navLinks: { label: string; to: string }[];
+  if (!user) {
+    navLinks = allNavLinks.filter(link => link.onlyAuthenticated !== true);
+  } else {
+    navLinks = allNavLinks.filter(link => link.onlyGuest !== true);
+  }
+
   return (
     <>
       {/* breakpoint for desktop resolutions */}
