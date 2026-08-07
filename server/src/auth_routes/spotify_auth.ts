@@ -59,9 +59,7 @@ spotify_auth_routes.get("/callback", async (req, res) => {
     expires_at: data.expires_in, // TODO: inacurrate (at != in)
   };
   addTokensForUser(token_obj);
-  res.redirect(
-    `http://${env.FRONTEND_URL}/account?spotify_connected=true`,
-  );
+  res.redirect(`http://${env.FRONTEND_URL}/account?spotify_connected=true`);
 });
 
 export default spotify_auth_routes;

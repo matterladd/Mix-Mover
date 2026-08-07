@@ -8,5 +8,5 @@ services:
     volumes:
       # ! Make sure this directory has the right perms to be accessed, otherwise DB will not be created/found
       - ./server/data:/app/server/data
-    ports:  
+    ports:
       - "8000:8000"

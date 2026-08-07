@@ -22,12 +22,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-      
+
       - name: Log in to GHCR
         # GITHUB_TOKEN is a secret that is automatically
         # created for every workflow run.
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-      
+
       - name: Build and push
         # pushes to every tag
         run: |
@@ -36,4 +36,3 @@ jobs:
             --tag ghcr.io/${{ env.IMAGE_NAME }}:${{ github.sha }} \
             --push \
             .
-

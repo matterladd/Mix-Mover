@@ -182,7 +182,6 @@ export async function search_spotify_track(
   console.log(`Cached?: ${cached ? true : false}`);
 
   if (cached) {
-
     console.log(`cache hit: ${query}`);
 
     const data = JSON.parse(cached.response_json) as SpotifySearchResults;
@@ -190,7 +189,7 @@ export async function search_spotify_track(
     // TODO Cache null results?
 
     console.log(`Returned result of cache: ${result?.uri ?? null}`);
-    
+
     return result?.uri ?? null; // null if track is not found, otherwise returns Spotify URI
   }
 
