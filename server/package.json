@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon --exec tsx --env-file=.env src/main.ts",
     "lint": "eslint . --ignore-pattern 'dist/*'",
-    "prettier": "prettier --check .",
+    "prettier-check": "prettier --check .",
+    "prettier-write": "prettier --write .",
     "build": "tsc",
     "start": "node --env-file=.env dist/main.js"
   },

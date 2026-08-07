@@ -1,24 +1,30 @@
 {
-  "name": "playlist-converter",
+  "name": "Mix-Mover",
   "version": "1.0.0",
   "description": "When cloning this repo, run `npm install` to install all the dependencies",
   "main": "index.js",
   "scripts": {
+    "install-all": "npm install && npm install --prefix client && npm install --prefix server",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\""
+    "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\"",
+    "prettier-check": "npm run prettier-check --prefix client && npm run prettier-check --prefix server",
+    "prettier-write": "npm run prettier-write --prefix client && npm run prettier-write --prefix server",
+    "lint": "npm run lint --prefix client && npm run lint --prefix server",
+    "build": "npm run build --prefix client && npm run build --prefix server",
+    "start": "npm run start --prefix server"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/matterladd/Playlist-Converter.git"
+    "url": "git+https://github.com/matterladd/Mix-Mover.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/matterladd/Playlist-Converter/issues"
+    "url": "https://github.com/matterladd/Mix-Mover/issues"
   },
-  "homepage": "https://github.com/matterladd/Playlist-Converter#readme",
+  "homepage": "https://github.com/matterladd/Mix-Mover#readme",
   "devDependencies": {
     "concurrently": "^9.2.1"
   }
