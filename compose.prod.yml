@@ -2,6 +2,7 @@ services:
   mixmover:
     container_name: mixmover
     image: ghcr.io/matterladd/mix-mover:latest
+    pull_policy: always
     restart: unless-stopped
     env_file:
       - ./server/.env
