@@ -32,8 +32,8 @@ jobs:
         # pushes to every tag
         run: |
           docker buildx build \
-            --tag ${{ env.IMAGE_NAME }}:latest \
-            --tag ${{ env.IMAGE_NAME }}:${{ github.sha }} \
+            --tag ghcr.io/${{ env.IMAGE_NAME }}:latest \
+            --tagghcr.io/${{ env.IMAGE_NAME }}:${{ github.sha }} \
             --push \
             .
 
