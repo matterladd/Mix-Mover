@@ -21,6 +21,7 @@
     "better-sqlite3": "^12.10.0",
     "better-sqlite3-session-store": "^0.1.0",
     "bottleneck": "^2.19.5",
+    "cookie-parser": "^1.4.7",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "playwright": "^1.60.0"
@@ -29,6 +30,7 @@
     "@eslint/js": "^10.0.1",
     "@types/bcrypt": "^6.0.0",
     "@types/better-sqlite3": "^7.6.13",
+    "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.6",
     "@types/express-session": "^1.19.0",
     "eslint": "^10.7.0",

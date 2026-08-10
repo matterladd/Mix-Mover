@@ -33,6 +33,7 @@ app.use(
       httpOnly: true, // prevents JS access to cookie (security)
       secure: false,
       sameSite: "strict",
+      maxAge: 1 * 24 * 60 * 60 * 1000, // 1 day
     },
     resave: false,
     saveUninitialized: false,
