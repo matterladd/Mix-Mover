@@ -1,44 +1,47 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 
 export default function Home() {
   const [appleLink, setAppleLink] = useState("");
-  const [isLoading, setisLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
-    setisLoading(true);
-    const response = await fetch("/api/spotify/convert-apple", {
+
+    setIsLoading(true);
+    const convertPromise = fetch("/api/spotify/convert-apple", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ link: appleLink }),
+    }).then(async (response) => {
+      const data = await response.json();
+      if (!response.ok) {
+        console.error(
+          `unsuccessful conversion, status ${response.status}, ${data.message}`,
+        );
+        throw new Error(data.message);
+      } else {
+        setAppleLink("");
+      }
     });
 
-    if (!response.ok) {
-      const data = await response.json();
-      console.error(
-        `unsuccessful conversion, status ${response.status}, ${data.message}`,
-      );
-      toast.error("Unsuccessful", {
-        position: "top-right",
-        action: {
-          label: "x",
-          onClick: () => {},
-        },
-      });
-    } else {
-      toast.success("Success!", {
-        position: "top-right",
-        action: {
-          label: "x",
-          onClick: () => {},
-        },
-      });
+    toast.promise(convertPromise, {
+      loading: "Converting...",
+      success: "Success! Go to <playlist link> to view playlist",
+      error: (err: Error) => err.message,
+      position: "top-right",
+    });
+
+    try {
+      await convertPromise;
+      setAppleLink("");
+    } catch (err) {
+      console.error("unsuccessful conversion:", err);
+    } finally {
+      setIsLoading(false);
     }
-    setisLoading(false);
   };
 
   return (
@@ -65,7 +68,6 @@ export default function Home() {
         <div className="pt-2 md:pt-0">
           <Button type="submit" disabled={isLoading} className="">
             convert
-            {isLoading && <Spinner data-icon="inline-start" />}
           </Button>
         </div>
       </form>

@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/item";
 import { useSpotifyContext } from "@/context/spotify/index";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 function AccountView() {
   const { user, setUser } = useAuthContext();
@@ -22,20 +23,25 @@ function AccountView() {
     window.location.assign("/api/spotify_auth");
   }
 
-  function connectAppleMusicAccount() {
-    alert("Feature not implemented, in progress");
-  }
-
   async function handleLogout() {
     try {
       const res = await fetch("/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });
-      if (!res.ok) throw new Error("logout failed, status " + res.status);
+      if (!res.ok) {
+        toast.error(`Error logging out`, {
+          position: "top-right",
+        });
+        throw new Error("logout failed, status " + res.status);
+      }
       setUser(null);
       setSpotifyUser(null);
       navigate("/");
+      toast.success(`Successfully logged out!`, {
+        position: "top-right",
+        duration: 1500,
+      });
     } catch (err) {
       console.error(err);
     }
@@ -96,12 +102,10 @@ function AccountView() {
             <Item variant="outline">
               <ItemContent>
                 <ItemTitle>Apple Music Account</ItemTitle>
-                <ItemDescription>None</ItemDescription>
+                <ItemDescription>coming soon!</ItemDescription>
               </ItemContent>
               <ItemActions>
-                <Button onClick={connectAppleMusicAccount}>
-                  connect account
-                </Button>
+                <Button disabled>connect account</Button>
               </ItemActions>
             </Item>
           </ItemGroup>

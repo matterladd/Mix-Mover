@@ -12,6 +12,7 @@ import { useAuthContext } from "@/context/auth/index";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSpotifyContext } from "@/context/spotify/index";
+import { toast } from "sonner";
 
 export function LoginForm({
   className,
@@ -36,9 +37,14 @@ export function LoginForm({
     });
     const data = await res.json();
     if (!res.ok) {
-      console.error(data.error);
-      // setIsLoggedIn(false);
+      toast.error(`Unsuccessful: ${data.error}`, {
+        position: "top-right",
+      });
     } else {
+      toast.success(`Logged in successfully!`, {
+        position: "top-right",
+        duration: 3000,
+      });
       setUser({ id: data.id, email: data.email });
       updateSpotifyUser();
       navigate("/");
@@ -65,12 +71,6 @@ export function LoginForm({
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <a
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Forgot your password?
-                  </a>
                 </div>
                 <Input
                   id="password"

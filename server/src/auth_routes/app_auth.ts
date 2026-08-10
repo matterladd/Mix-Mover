@@ -13,7 +13,7 @@ app_auth_routes.post("/login", async (req, res) => {
   // TODO: are async functions handled correctly by express?
 
   if (!req.body) {
-    res.status(400).json({ error: "Bad request" });
+    res.status(400).json({ error: "bad request" });
     return;
   }
   const body = req.body as LoginBody; // TODO: Not exactly a fix
@@ -23,14 +23,14 @@ app_auth_routes.post("/login", async (req, res) => {
     // TODO: logic here can be improved
     const match = await bcrypt.compare(password, user.password_hash); // TODO: error checking
     if (!match) {
-      res.status(401).json({ error: "Invalid credentials" });
+      res.status(401).json({ error: "invalid credentials" });
       return;
     }
     req.session.user_id = user.id;
     res.status(200).json({ id: user.id, email: email });
     return;
   }
-  res.status(401).json({ error: "Invalid credentials" });
+  res.status(401).json({ error: "invalid credentials" });
 });
 
 app_auth_routes.post("/logout", (req, res) => {
@@ -48,7 +48,7 @@ app_auth_routes.post("/logout", (req, res) => {
 
 app_auth_routes.post("/signup", async (req, res) => {
   if (!req.body) {
-    res.status(400).json({ error: "Bad request" });
+    res.status(400).json({ error: "bad request" });
     return;
   }
   const body = req.body as LoginBody; // TODO: Not exactly a fix
