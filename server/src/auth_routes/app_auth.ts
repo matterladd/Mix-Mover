@@ -1,7 +1,12 @@
 import express, { Router } from "express";
 import "express-session"; // include for types
 import bcrypt from "bcrypt";
-import { getUserByEmail, addUser } from "../db/queries.js";
+import {
+  getUserByEmail,
+  addUser,
+  deleteUser,
+  getUserById,
+} from "../db/queries.js";
 import { LoginBody } from "../types/index.js";
 
 const SALT_ROUNDS = 12;
@@ -62,6 +67,29 @@ app_auth_routes.post("/signup", async (req, res) => {
   const result = addUser.run(email, hashed_password); // TODO: Error checking and handling
   req.session.user_id = result.lastInsertRowid as number;
   res.status(200).json({ success: true });
+});
+
+app_auth_routes.post("/delete", async (req, res) => {
+  const user_id = req.session.user_id;
+  if (!user_id) {
+    res.status(401).json({ error: "not signed in" });
+    return;
+  }
+  const body = req.body as { password: string };
+  const { password } = body;
+  const user = getUserById.get(user_id);
+  if (user) {
+    const match = await bcrypt.compare(password, user.password_hash); // TODO: error checking
+    if (!match) {
+      res.status(401).json({ error: "invalid credentials" });
+      return;
+    }
+    deleteUser.run(user_id);
+    res.clearCookie("connect.sid");
+    res.status(200).json({ success: true });
+    return;
+  }
+  res.status(404).json({ error: "user not found" });
 });
 
 export default app_auth_routes;

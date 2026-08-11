@@ -16,7 +16,7 @@ db.exec(`
         access_token TEXT NOT NULL,
         refresh_token TEXT,
         expires_at DATETIME,
-        FOREIGN KEY (user_id) REFERENCES users(id)
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
         UNIQUE (user_id, service)
     );
 
@@ -31,7 +31,7 @@ db.exec(`
         target_url TEXT,
         name TEXT NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES users(id)
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );
 
     CREATE TABLE IF NOT EXISTS spotify_users (
@@ -43,7 +43,7 @@ db.exec(`
         href TEXT,
         image_url TEXT,
         uri TEXT,
-        FOREIGN KEY (user_id) REFERENCES users(id)
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );
 
     CREATE TABLE IF NOT EXISTS spotify_search_cache (

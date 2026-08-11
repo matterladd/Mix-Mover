@@ -10,13 +10,23 @@ import {
   ItemMedia,
   ItemTitle,
 } from "@/components/ui/item";
+import {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { useSpotifyContext } from "@/context/spotify/index";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
 
 function AccountView() {
   const { user, setUser } = useAuthContext();
   const { spotifyUser, setSpotifyUser } = useSpotifyContext();
+  const [password, setPassword] = useState<string>("");
   const navigate = useNavigate();
 
   function connectSpotifyAccount() {
@@ -36,6 +46,7 @@ function AccountView() {
         throw new Error("logout failed, status " + res.status);
       }
       setUser(null);
+      setPassword("");
       setSpotifyUser(null);
       navigate("/");
       toast.success(`Successfully logged out!`, {
@@ -44,8 +55,42 @@ function AccountView() {
       });
     } catch (err) {
       console.error(err);
+      toast.error(`Network failure`, {
+        position: "top-right",
+      });
     }
   }
+
+  async function handleDeleteAccount(e: React.SubmitEvent) {
+    e.preventDefault();
+    try {
+      const res = await fetch("/api/auth/delete", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: password }),
+      });
+      if (!res.ok) {
+        toast.error(`Error deleting account`, {
+          position: "top-right",
+        });
+        throw new Error("account deletion failed, status " + res.status);
+      }
+      setUser(null);
+      setSpotifyUser(null);
+      navigate("/");
+      toast.success(`Account successfully deleted`, {
+        position: "top-right",
+        duration: 1500,
+      });
+    } catch (err) {
+      console.error(err);
+      toast.error(`Network failure`, {
+        position: "top-right",
+      });
+    }
+  }
+
   return (
     <div className="flex w-full justify-center">
       <div className="flex flex-col w-full max-w-md items-center">
@@ -59,13 +104,38 @@ function AccountView() {
           >
             Logout
           </Button>
-          <Button
-            className="max-w-fit"
-            variant="destructive"
-            onClick={() => alert("not implemented")}
-          >
-            Delete Account
-          </Button>
+          <Popover>
+            <PopoverTrigger
+              render={<Button variant="destructive" className={"max-w-fit"} />}
+            >
+              Delete Account
+            </PopoverTrigger>
+            <PopoverContent>
+              <PopoverHeader>
+                <PopoverTitle>Are you sure?</PopoverTitle>
+                <PopoverDescription>Enter your password</PopoverDescription>
+              </PopoverHeader>
+              <form
+                className="flex flex-col md:flex-row justify-center items-center"
+                onSubmit={handleDeleteAccount}
+              >
+                <div className="pr-1">
+                  <Input
+                    placeholder="password"
+                    value={password}
+                    type="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="pt-2 md:pt-0">
+                  <Button type="submit" variant="destructive">
+                    delete
+                  </Button>
+                </div>
+              </form>
+            </PopoverContent>
+          </Popover>
         </div>
         <div className="pb-2">
           <ItemGroup>

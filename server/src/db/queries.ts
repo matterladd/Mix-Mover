@@ -17,6 +17,10 @@ export const addUser = db.prepare<[string, string], User>(
   "INSERT INTO users (email, password_hash) VALUES (?, ?)",
 ); // TODO: correct return type?
 
+export const deleteUser = db.prepare<[number]>(
+  "DELETE FROM users WHERE id = ?;",
+);
+
 /**
  * Should only be used for first time token insertion for a user, see `updateTokensForUser`
  */
@@ -37,7 +41,7 @@ const insertSpotifyToken = db.prepare<
 >(`
     INSERT OR REPLACE INTO tokens (user_id, service, access_token, refresh_token, expires_at)
     VALUES (?, ?, ?, ?, ?)
-    `); // TODO: REPLACE may not be needed here
+`); // TODO: REPLACE may not be needed here
 
 export const getSpotifyTokens = db.prepare<[number], Token>(
   "SELECT * FROM tokens WHERE user_id = ? AND service = 'spotify';",
