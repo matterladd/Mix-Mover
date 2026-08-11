@@ -83,10 +83,6 @@ export default function NavBar() {
                 </NavigationMenuLink>
               </NavigationMenuItem>
             ))}
-            {/* // TODO whole surface of button not clickable */}
-            <NavigationMenuItem
-              className={navigationMenuTriggerStyle()}
-            ></NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
         <ThemeToggle className="p-4" />
