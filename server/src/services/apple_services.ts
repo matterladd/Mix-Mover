@@ -9,6 +9,9 @@ const page = await context.newPage();
 export async function scrape_apple_playlist(
   playlist_url: string,
 ): Promise<ApplePlaylist> {
+  const parsed_url = new URL(playlist_url);
+  if (parsed_url.hostname !== "music.apple.com")
+    throw new Error("not an Apple Music link");
   await page.goto(playlist_url);
   const title = await page.evaluate(() => {
     const element = document.querySelector(".headings__title"); // `.` for CSS class shorthand
