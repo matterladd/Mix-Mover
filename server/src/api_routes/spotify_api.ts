@@ -145,7 +145,7 @@ spotify_api_routes.post("/convert-apple", async (req, res, next) => {
       spotify_playlist_data.id,
       search_results.filter((uri) => uri !== null),
     );
-    res.json({ success: true });
+    res.json({ success: true, playlist_link: spotify_playlist_data.external_urls.spotify });
   } catch (err) {
     console.error(err); // backend error message
     next(new Error(`Conversion failed`)); // error message to forward to frontend

@@ -26,12 +26,13 @@ export default function Home() {
         throw new Error(data.message);
       } else {
         setAppleLink("");
+        return data;
       }
     });
 
     toast.promise(convertPromise, {
       loading: "Converting...",
-      success: "Success! Go to <playlist link> to view playlist",
+      success: (data) => `Success! Go to ${data.playlist_link} to view playlist`,
       error: (err: Error) => err.message,
       position: "top-right",
     });
@@ -118,8 +119,8 @@ export default function Home() {
                   <Link to="/account" className="font-semibold hover:underline">
                     MixMover Account
                   </Link>{" "}
-                  and connect the external account(s) you want to save your converted
-                  playlists to
+                  and connect the external account(s) you want to save your
+                  converted playlists to
                 </li>
               </ul>
               <li>Paste the playlist link above and behold!</li>
