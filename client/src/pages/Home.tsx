@@ -32,7 +32,14 @@ export default function Home() {
 
     toast.promise(convertPromise, {
       loading: "Converting...",
-      success: (data) => `Success! Go to ${data.playlist_link} to view playlist`,
+      success: (data) => ({
+        message: "Playlist converted!",
+        action: {
+          label: "Open in Spotify",
+          onClick: () =>
+            window.open(data.playlist_link, "_blank", "noopener,noreferrer"),
+        },
+      }),
       error: (err: Error) => err.message,
       position: "top-right",
     });
