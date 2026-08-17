@@ -11,7 +11,10 @@
 
 **MixMover** is a web app that converts a music playlist from one service to another. I built this project to showcase my full-stack development skills as well as personal use and the use of anyone looking for such a tool.
 
-![](https://github.com/user-attachments/assets/2a7b4acf-e8b6-46f7-988a-94f4b3a1525f)
+<img
+    width=350
+    height=500
+    src="https://github-production-user-asset-6210df.s3.amazonaws.com/121071372/637129684-fb3b8af3-e9a0-49ba-8e69-fc43d6816aad.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20260817%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260817T194225Z&X-Amz-Expires=300&X-Amz-Signature=04f38be55e03f1be7163835d3ca7a0eadbe18fa85186842ce59404d696fb64fe&X-Amz-SignedHeaders=host&response-content-type=image%2Fgif">
 
 ## Features
 - Saves converted playlist directly to your Spotify Account
