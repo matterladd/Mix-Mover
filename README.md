@@ -19,11 +19,13 @@
 ## Features
 - Saves converted playlist directly to your Spotify Account
 - Clear feedback on conversion status
-- Securely saves external account information using OAuth, tokens are scoped and session-based
+- Securely saves external account information using OAuth Authorization Code Flow, tokens are scoped and session-based
 - Responsive design for mobile and desktop resolutions
 - Light and Dark theming for your eyeballs
-> [!NOTE]
-> Spotify App is currently in Development Mode. Only users who are authorized in the Development Dashboard can use the Spotify features of the web app.
+
+## Current Limitations
+- Conversions only work from Apple Music -> Spotify. This is due to the current Apple Developer fee which restricts access to their API. I intend in the future to implement the Spotify -> Apple Music conversions.
+- Spotify App is currently in Development Mode. Only users who are authorized in the Development Dashboard can use the Spotify features of the web app.
 
 ## Quickstart Prod Deployment
 
