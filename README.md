@@ -13,7 +13,7 @@ cd mixmover
 ```
 
 > [!NOTE] 
-> Your `.env` must exist at `mixmover/` in order to run the program 
+> Your `.env` must exist at `mixmover/server` in order to run the program 
 
 ```bash
 # Copy compose.prod.yml
