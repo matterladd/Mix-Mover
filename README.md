@@ -1,8 +1,21 @@
 # MixMover
+![Node.js](https://img.shields.io/badge/Node.js-Express%205-339933?logo=node.js&logoColor=white)
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-better--sqlite3-003B57?logo=sqlite&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Pi%20ARM64-2496ED?logo=docker&logoColor=white)
+![Build](https://img.shields.io/github/actions/workflow/status/matterladd/Mix-Mover/docker-publish.yml)
+![Last Commit](https://img.shields.io/github/last-commit/matterladd/Mix-Mover)
 
 ### For when your friend keeps sending you those dang Apple Music links
 
 **MixMover** is a web app that converts a music playlist from one service to another. I built this project to showcase my full-stack development skills as well as personal use and the use of anyone looking for such a tool.
+
+## Features
+- Securely saves external account information using OAuth
+- Clear feedback on conversion status
+- Responsive design for mobile and desktop resolutions
+- Light and Dark theming
 
 ## Quickstart Prod Deployment
 
