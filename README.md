@@ -12,10 +12,13 @@
 **MixMover** is a web app that converts a music playlist from one service to another. I built this project to showcase my full-stack development skills as well as personal use and the use of anyone looking for such a tool.
 
 ## Features
-- Securely saves external account information using OAuth
+- Saves converted playlist directly to your Spotify Account
 - Clear feedback on conversion status
+- Securely saves external account information using OAuth, tokens are scoped and session-based
 - Responsive design for mobile and desktop resolutions
-- Light and Dark theming
+- Light and Dark theming for your eyeballs
+> [!NOTE]
+> Spotify App is currently in Development Mode. Only users who are authorized in the Development Dashboard can use the Spotify features of the web app.
 
 ## Quickstart Prod Deployment
 
