@@ -4,32 +4,64 @@
 
 **MixMover** is a web app that converts a music playlist from one service to another. I built this project to showcase my full-stack development skills as well as personal use and the use of anyone looking for such a tool.
 
-## Installation
+## Quickstart Prod Deployment
 
-This project is organized into three `npm` project domains: the _client_, _server_, and the _overall/top-level_. Running top-level runs the whole application, while running only the client or server will run that part of the stack. To install:
+```bash
+# Create directory structure with proper permissions
+mkdir -m 764 -p mixmover/server/data
+cd mixmover
+```
 
-1. Clone this repository
-2. Be sure you have `Node.js` and `npm` installed
-3. Run `npm install` in the root of the project, `./client`, and `./server` to install all three `npm` project domains
-4. Run the full app with `npm run dev` at project root, or to run only frontend or backend, `npm run dev` at `./client` and `./server` respectively
+> [!NOTE] Your `.env` must exist at `mixmover/` in order to run the program 
 
-## Deployment
+```bash
+# Copy compose.prod.yml
+curl -O https://raw.githubusercontent.com/matterladd/Mix-Mover/refs/heads/main/compose.prod.yml
 
-- TODO
+# Run with Docker Compose
+sudo docker compose -f compose.prod.yml up
+```
+
+## Dev Installation
+
+This project is a [monorepo](https://en.wikipedia.org/wiki/Monorepo) organized into three `npm` project domains: the _client_, _server_, and the _overall/top-level_. Running top-level runs the whole application, while running only the client or server will run that part of the stack. To install for development:
+
+```bash
+# Clone this repository
+git clone https://github.com/matterladd/Mix-Mover.git
+
+# Install dependencies
+cd Mix-Mover
+npm install
+
+cd ./client
+npm install
+
+cd ../server
+npm install
+
+# Run the whole app
+cd ..
+npm run dev
+```
 
 ## File Structure
 
 ### `./client`
 
-- TODO
+- `pages/`: All top-level React page components.
+- `components/`: All non-top-level React components.
+    - `ui/`: Shadcn components.
+- `context/`: All React contexts needed by the application
 
 ### `./server`
 
-- `src`
-  - `api_routes`: Contains _Express_ routes that are responsible for handling requests geared towards a certain API.
-  - `services`: Helper functions that may interact directly with an external API. Used in various _Express_ routes.
-  - `auth_routes`: _Express_ routes that handle user authentication.
-  - `db`: Contains external database connection, queries, and database setup/creation.
+- `src/`
+  - `api_routes/`: Contains _Express_ routes that are responsible for handling requests geared towards a certain API.
+  - `services/`: Helper functions that may interact directly with an external API. Used in various _Express_ routes.
+  - `auth_routes/`: _Express_ routes that handle user authentication.
+  - `db/`: Contains external database connection, queries, and database setup/creation.
+- `data/`: Must exist when running (Docker image has this preconfigured) and may contain a SQLite database file. A database file will be created if one does not exist.
 
 ## List of `npm` dependencies and their purpose:
 
@@ -49,7 +81,6 @@ This project is organized into three `npm` project domains: the _client_, _serve
 - `better-sqlite3-session-store` -> Stores user data across different sessions by integrating with `express-session`
 - `bcrypt` -> Hashing algorithm used to securely store passwords
 - `playwright` -> Headless browser library that is used for web scraping certain sites for playlist data
-  - _Is full browser emulation needded? What about just cURLing the page?_
 - `tsx` -> Development tool for running backend without needing to build
 - `nodemon` -> Development tool for hot-reloading the backend server
 - `bottleneck` -> Handles API rate limiting for outside API requests
