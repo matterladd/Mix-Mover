@@ -12,7 +12,8 @@ mkdir -m 764 -p mixmover/server/data
 cd mixmover
 ```
 
-> [!NOTE] Your `.env` must exist at `mixmover/` in order to run the program 
+> [!NOTE] 
+> Your `.env` must exist at `mixmover/` in order to run the program 
 
 ```bash
 # Copy compose.prod.yml
