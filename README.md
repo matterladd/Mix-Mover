@@ -11,23 +11,27 @@
 
 **MixMover** is a web app that converts a music playlist from one service to another. I built this project to showcase my full-stack development skills as well as personal use and the use of anyone looking for such a tool.
 
+🔗 [Live Demo](https://mixmover.macook.dev)
+
 <img
     width=350
     height=500
     src="https://github-production-user-asset-6210df.s3.amazonaws.com/121071372/637129684-fb3b8af3-e9a0-49ba-8e69-fc43d6816aad.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20260817%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260817T194225Z&X-Amz-Expires=300&X-Amz-Signature=04f38be55e03f1be7163835d3ca7a0eadbe18fa85186842ce59404d696fb64fe&X-Amz-SignedHeaders=host&response-content-type=image%2Fgif">
 
+
 ## Features
 
+- Secure, session based MixMover account management
 - Saves converted playlist directly to your Spotify Account
 - Clear feedback on conversion status
-- Securely handles external Spotify account information using OAuth Authorization Code Flow, tokens are scoped and session-based
+- Securely handles external Spotify account information using [OAuth Authorization Code Flow](https://developer.spotify.com/documentation/web-api/concepts/authorization), tokens are scoped and session-based
 - Responsive design for mobile and desktop resolutions
 - Light and Dark theming for your eyeballs
 
 ## Current Limitations
 
 - Conversions only work from Apple Music -> Spotify. This is due to the current Apple Developer fee which restricts access to their API. I intend in the future to implement the Spotify -> Apple Music conversions.
-- Spotify App is currently in Development Mode. Only users who are authorized in the Development Dashboard can use the Spotify features of the web app.
+- Spotify App is currently in [Development Mode](https://developer.spotify.com/documentation/web-api/concepts/quota-modes). Only users who are authorized in the Development Dashboard can use the Spotify features of the web app. Graduating from Development Mode to Extended Quota Mode requires an application sent to Spotify and organizational overhead, which is outside the scope of this project.
 
 ## Quickstart Prod Deployment
 
@@ -47,6 +51,7 @@ curl -O https://raw.githubusercontent.com/matterladd/Mix-Mover/refs/heads/main/c
 # Run with Docker Compose
 sudo docker compose -f compose.prod.yml up
 ```
+See more in [deployment.md](./deployment.md)
 
 ## Dev Installation
 
@@ -72,6 +77,7 @@ npm run dev
 ```
 
 ## Tech Stack:
+- See more in [architecture.md](./architecture.md)
 
 ### Languages
 - TypeScript
@@ -92,7 +98,7 @@ npm run dev
 - `better-sqlite3` -> Node integration with a SQLite database
 - `better-sqlite3-session-store` -> Stores user data across different sessions by integrating with `express-session`
 - `bcrypt` -> Hashing algorithm used to securely store local MixMover account passwords
-- `playwright` -> Headless browser (Firefox) library that is used for web scraping certain sites for playlist data
+- `playwright` -> Headless browser (Firefox) library that is used for web scraping Apple Music for playlist data, since no public API is available.
 - `bottleneck` -> Handles API rate limiting for outside API requests
 
 ## File Structure
@@ -113,8 +119,9 @@ npm run dev
   - `db/`: Contains external database connection, queries, and database setup/creation.
 - `data/`: Must exist when running (Docker image has this preconfigured) and may contain a SQLite database file. A database file will be created if one does not exist.
 
-## Docs
+## API Endpoint Groups
 
+- See more in [architecture.md](./architecture.md)
 - Backend Routes:
   - `/api`: Root of all backend services.
   - `/api/auth`: Contains all routes having to do with MixMover account authorization.
