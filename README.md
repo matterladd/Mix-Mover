@@ -17,13 +17,15 @@
     src="https://github-production-user-asset-6210df.s3.amazonaws.com/121071372/637129684-fb3b8af3-e9a0-49ba-8e69-fc43d6816aad.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20260817%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260817T194225Z&X-Amz-Expires=300&X-Amz-Signature=04f38be55e03f1be7163835d3ca7a0eadbe18fa85186842ce59404d696fb64fe&X-Amz-SignedHeaders=host&response-content-type=image%2Fgif">
 
 ## Features
+
 - Saves converted playlist directly to your Spotify Account
 - Clear feedback on conversion status
-- Securely saves external account information using OAuth Authorization Code Flow, tokens are scoped and session-based
+- Securely handles external Spotify account information using OAuth Authorization Code Flow, tokens are scoped and session-based
 - Responsive design for mobile and desktop resolutions
 - Light and Dark theming for your eyeballs
 
 ## Current Limitations
+
 - Conversions only work from Apple Music -> Spotify. This is due to the current Apple Developer fee which restricts access to their API. I intend in the future to implement the Spotify -> Apple Music conversions.
 - Spotify App is currently in Development Mode. Only users who are authorized in the Development Dashboard can use the Spotify features of the web app.
 
@@ -69,25 +71,7 @@ cd ..
 npm run dev
 ```
 
-## File Structure
-
-### `./client`
-
-- `pages/`: All top-level React page components.
-- `components/`: All non-top-level React components.
-    - `ui/`: Shadcn components.
-- `context/`: All React contexts needed by the application
-
-### `./server`
-
-- `src/`
-  - `api_routes/`: Contains _Express_ routes that are responsible for handling requests geared towards a certain API.
-  - `services/`: Helper functions that may interact directly with an external API. Used in various _Express_ routes.
-  - `auth_routes/`: _Express_ routes that handle user authentication.
-  - `db/`: Contains external database connection, queries, and database setup/creation.
-- `data/`: Must exist when running (Docker image has this preconfigured) and may contain a SQLite database file. A database file will be created if one does not exist.
-
-## List of `npm` dependencies and their purpose:
+## Tech Stack:
 
 ### Client
 
@@ -112,6 +96,24 @@ npm run dev
 ### Project
 
 - `concurrently` -> runs multiple commands concurrently. Used to run client and server at the same time.
+
+## File Structure
+
+### `./client`
+
+- `pages/`: All top-level React page components.
+- `components/`: All non-top-level React components.
+    - `ui/`: Shadcn components.
+- `context/`: All React contexts needed by the application
+
+### `./server`
+
+- `src/`
+  - `api_routes/`: Contains _Express_ routes that are responsible for handling requests geared towards a certain API.
+  - `services/`: Helper functions that may interact directly with an external API. Used in various _Express_ routes.
+  - `auth_routes/`: _Express_ routes that handle user authentication.
+  - `db/`: Contains external database connection, queries, and database setup/creation.
+- `data/`: Must exist when running (Docker image has this preconfigured) and may contain a SQLite database file. A database file will be created if one does not exist.
 
 ## Docs
 
