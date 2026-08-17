@@ -73,6 +73,9 @@ npm run dev
 
 ## Tech Stack:
 
+### Languages
+- TypeScript
+
 ### Client
 
 - `react` -> Frontend library
@@ -85,10 +88,11 @@ npm run dev
 
 - `express` -> Backend API routing framework
 - `express-session` -> Express middleware extension to store active session information
+- `cookie-parser` -> Parses the short-lived signed cookie used during the OAuth handshake
 - `better-sqlite3` -> Node integration with a SQLite database
 - `better-sqlite3-session-store` -> Stores user data across different sessions by integrating with `express-session`
-- `bcrypt` -> Hashing algorithm used to securely store passwords
-- `playwright` -> Headless browser library that is used for web scraping certain sites for playlist data
+- `bcrypt` -> Hashing algorithm used to securely store local MixMover account passwords
+- `playwright` -> Headless browser (Firefox) library that is used for web scraping certain sites for playlist data
 - `bottleneck` -> Handles API rate limiting for outside API requests
 
 ## File Structure
