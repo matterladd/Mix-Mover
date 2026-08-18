@@ -65,7 +65,8 @@ spotify_auth_routes.get("/callback", async (req, res) => {
     state: string;
     user_id: number;
   };
-  if (returned_state !== spotify_auth_cookie.state) throw new Error(`state does not match`);
+  if (returned_state !== spotify_auth_cookie.state)
+    throw new Error(`state does not match`);
 
   const response = await fetch(`${env.SPOTIFY_ACCOUNTS_URL}/api/token`, {
     method: "POST",

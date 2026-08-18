@@ -129,3 +129,7 @@ npm run dev
   - `/api/app`: Contains all routes that concern MixMover data.
   - `/api/spotify`: Contains all routes that concern Spotify data. Where most of the Spotify API calls live.
 - Backend errors will return `{ error: "message" }` to the frontend.
+
+## Docs
+- [architecture.md](./architecture.md)
+- [deployment.md](./deployment.md)

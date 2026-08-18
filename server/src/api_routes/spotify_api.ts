@@ -122,6 +122,8 @@ spotify_api_routes.post("/convert-apple", async (req, res, next) => {
 
     // * Unpacks body and renames link to apple_link
     const { link: apple_link } = req.body as { link: string };
+
+    // * Scrapes song titles and artist names from site
     const apple_data = await scrape_apple_playlist(apple_link);
 
     // * Batch requests to deal with rate limiting
@@ -145,7 +147,10 @@ spotify_api_routes.post("/convert-apple", async (req, res, next) => {
       spotify_playlist_data.id,
       search_results.filter((uri) => uri !== null),
     );
-    res.json({ success: true, playlist_link: spotify_playlist_data.external_urls.spotify });
+    res.json({
+      success: true,
+      playlist_link: spotify_playlist_data.external_urls.spotify,
+    });
   } catch (err) {
     console.error(err); // backend error message
     next(new Error(`Conversion failed`)); // error message to forward to frontend

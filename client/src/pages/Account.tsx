@@ -113,7 +113,9 @@ function AccountView() {
             <PopoverContent>
               <PopoverHeader>
                 <PopoverTitle>Are you sure?</PopoverTitle>
-                <PopoverDescription className="pb-4">All of your account data will be deleted.</PopoverDescription>
+                <PopoverDescription className="pb-4">
+                  All of your account data will be deleted.
+                </PopoverDescription>
                 <PopoverDescription>Enter your password:</PopoverDescription>
               </PopoverHeader>
               <form
