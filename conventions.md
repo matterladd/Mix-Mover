@@ -12,5 +12,6 @@ Last rule takes precendence if multiple rules apply.
 ### React
 
 - All React files are kebab-case (`example-file.tsx`)
+- All React page files are PascalCase (`ExampleFile.tsx`)
 - All React components are PascalCase (`ExampleComponent`)
 - All React function and variables are camelCase (`exampleStateVar`)
