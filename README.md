@@ -13,10 +13,10 @@
 
 🔗 [Live Demo](https://mixmover.macook.dev)
 
-<video
+<img
     width=350
     height=500
-    src="assets/demo_video.webm">
+    src="assets/demo_video.gif">
 
 
 ## Features
