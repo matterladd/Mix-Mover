@@ -16,7 +16,7 @@
 <img
     width=350
     height=500
-    src="https://github-production-user-asset-6210df.s3.amazonaws.com/121071372/637129684-fb3b8af3-e9a0-49ba-8e69-fc43d6816aad.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20260817%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260817T194225Z&X-Amz-Expires=300&X-Amz-Signature=04f38be55e03f1be7163835d3ca7a0eadbe18fa85186842ce59404d696fb64fe&X-Amz-SignedHeaders=host&response-content-type=image%2Fgif">
+    src="assets/demo_video.webm">
 
 
 ## Features
